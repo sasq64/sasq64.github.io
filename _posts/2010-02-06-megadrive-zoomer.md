@@ -8,4 +8,4 @@ tags: [coding,assembler,megadrive,demoscene]
 {% include JB/setup %}
 I have recently tried some Megadrive coding...
 
-{% youtube AfqQWHNq1Qo %}
+<iframe width="560" height="420" src="http://www.youtube.com/embed/AfqQWHNq1Qo?color=white&theme=light"></iframe>

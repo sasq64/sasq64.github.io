@@ -380,7 +380,7 @@ Sheridan tried to be nice.
 Talked to Rikard H at lunch - apparently he told John just what
 he thought over a few beers - including that he really didn't care
 if the game came out or not and that he hated the whole situation.
-I would probably get fired for saying something like that.
+
 He also said that Matte didn't even want his name in the credits,
 because the game is just not good. I agree.
 
