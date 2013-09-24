@@ -59,7 +59,7 @@ Burn the ds.gba-file on your GBA-cart and launch.
 GAMEPLAY
 --------
 Most actions are performed by holding a direction on the directon pad and
-pressing one of A,B,X,Y. This gives you access to 9*4 shortcuts, which have
+pressing one of A,B,X,Y. This gives you access to 9 * 4 shortcuts, which have
 reasonable defaults but can be configured from INIT.TXT.
 
 The four blue squares under the Text matrix shows what will happen if you
