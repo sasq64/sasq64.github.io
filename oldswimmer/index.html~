@@ -1,0 +1,69 @@
+<html>
+<head>
+<link rel="stylesheet" href="subSilver.css" type="text/css"/>
+
+
+<title>Swimmer Web</title>
+</head>
+<body bgcolor="#FFFFFF">
+<img src=swimmer.png>
+<h3>Intro</h3>
+
+<p>Swimmer is the name given to a set of source code, technology and ideas whose
+intended use is to simplify the development of client/server software for
+handheld devices.
+</p><p>Swimmer consists of:
+<ul><li> The <i>Swimmer Client</i>, which is a thin, portable client program that runs on a handheld (or other) device and is capable of performing IO and running code in its virtual machine.
+</li>
+<li> The <i>Swimmer Protocol</i>, which defines how the server talks to the client.
+</li>
+<li> The <i>Swimmer Server API</i>, which is a set of classes and tools that simplifies the development of a Swimmer Server. 
+</li></ul>
+</p>
+<a href=intro.html>.. READ MORE...</a>
+
+<h3>Specification</h3>
+
+<ul>
+<li><a href=SwimmerSpecification.html>html</a>
+<li><a href=SwimmerSpecification.txt>txt</a>
+<li><a href=SwimmerSpecification.pdf>pdf</a>
+</ul>
+
+<h3>Screenshots</h3>
+
+<img src=artilleryshot.png>&nbsp;
+<img src=tetrisshot.png>&nbsp;
+<img src=tilegameshot.png>&nbsp;
+
+<h3>Download</h3>
+
+Snaphots can be found <a href=/snapshots/>here.</a>
+<p>
+It contains sourcecode for the server and PC client and should build on Linux,
+Windows (cygwin) and MacOSX.
+<p>
+The archive contains no mobile phone client, and allthough the client has
+worked on Nintendo DS earlier, it does not run there currently (a new client that will
+work on NDS and PSP is in the works).
+<p>
+You need boost,libpng & freetype2 to build the server and libsdl to build the client.
+(Note that there is no cygwin package for SDL, you need to download and build it yourself).
+<p>
+
+<h3>BBS</h3>
+
+<a href=http://swimmer.se/bbs/>http://swimmer.se/bbs/</a>
+
+
+<h3>Trac</h3>
+
+<a href=http://swimsuitboys.com:8000/>http://swimsuitboys.com:8000/</a>
+
+<p>
+<i> -- Jonas Minnberg</i>
+<p>
+<a href=http://gamejane.com/><img border=0 src=gamejane.png /></a>
+</p>
+</body>
+</html>

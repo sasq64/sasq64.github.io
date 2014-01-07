@@ -1,0 +1,1065 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>The Swimmer Specification</title><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en"><div class="titlepage"><div><div><h1 class="title"><a name="id2425082"></a>The Swimmer Specification</h1></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="article"><a href="#id2501014">Overview</a></span></dt><dd><dl><dt><span class="section"><a href="#id2496997">1. Introduction</a></span></dt><dt><span class="section"><a href="#id2522660">2. Memory</a></span></dt><dd><dl><dt><span class="section"><a href="#id2488377">2.1. Memory Introduction</a></span></dt><dt><span class="section"><a href="#id2513513">2.2. Virtual Memory</a></span></dt><dt><span class="section"><a href="#id2508435">2.3. Data Sendback</a></span></dt><dt><span class="section"><a href="#id2529685">2.4. Register usage</a></span></dt></dl></dd><dt><span class="section"><a href="#id2522274">3. Execution Unit</a></span></dt><dt><span class="section"><a href="#id2520627">4. Resources &amp; Packages</a></span></dt><dd><dl><dt><span class="section"><a href="#id2528203">4.1. Resources Introduction</a></span></dt><dt><span class="section"><a href="#id2523678">4.2. Naming</a></span></dt><dt><span class="section"><a href="#id2513743">4.3. Management</a></span></dt><dt><span class="section"><a href="#id2516917">4.4. Loading</a></span></dt><dt><span class="section"><a href="#id2528558">4.5. Packages</a></span></dt></dl></dd><dt><span class="section"><a href="#id2514135">5. Native Calls</a></span></dt><dd><dl><dt><span class="section"><a href="#id2511018">5.1. Native Calls Introduction</a></span></dt><dt><span class="section"><a href="#id2512916">5.2. Multicalls</a></span></dt></dl></dd><dt><span class="section"><a href="#id2524301">6. Graphics</a></span></dt><dt><span class="section"><a href="#id2513656">7. Sound</a></span></dt><dt><span class="section"><a href="#id2523201">8. Events &amp; Exceptions</a></span></dt><dd><dl><dt><span class="section"><a href="#id2504216">8.1. Events</a></span></dt><dt><span class="section"><a href="#id2523461">8.2. Exceptions</a></span></dt></dl></dd><dt><span class="section"><a href="#id2512006">9. Features</a></span></dt><dt><span class="section"><a href="#id2509983">10. Protocol</a></span></dt><dt><span class="section"><a href="#id2521545">11. Client startup &amp; flow</a></span></dt></dl></dd><dt><span class="article"><a href="#id2530789">Reference</a></span></dt><dd><dl><dt><span class="section"><a href="#id2520774">1. List of IO Registers</a></span></dt><dt><span class="section"><a href="#id2501059">2. List of Events</a></span></dt><dd><dl><dt><span class="section"><a href="#id2511424">2.1. <code class="literal">VEC_VBLANK</code></a></span></dt><dt><span class="section"><a href="#id2518906">2.2. <code class="literal">VEC_KEYPRESS</code></a></span></dt><dt><span class="section"><a href="#id2514722">2.3. <code class="literal">VEC_SCREENCLICK</code></a></span></dt><dt><span class="section"><a href="#id2521050">2.4. <code class="literal">VEC_TEXTLINE</code></a></span></dt><dt><span class="section"><a href="#id2523010">2.5. <code class="literal">VEC_TIMER</code></a></span></dt><dt><span class="section"><a href="#id2515728">2.6. <code class="literal">VEC_RESULT</code></a></span></dt><dt><span class="section"><a href="#id2515877">2.7. <code class="literal">VEC_EXCEPTION</code></a></span></dt><dt><span class="section"><a href="#id2508996">2.8. <code class="literal">VEC_EXTERNAL</code></a></span></dt><dt><span class="section"><a href="#id2523875">2.9. <code class="literal">VEC_NETSTATE</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2524683">3. List of Opcodes</a></span></dt><dd><dl><dt><span class="section"><a href="#id2527588">3.1. Zeropage opcodes</a></span></dt><dt><span class="section"><a href="#id2475813">3.2. Miscellaneous Opcodes</a></span></dt><dt><span class="section"><a href="#id2491262">3.3. Memory Opcodes</a></span></dt><dt><span class="section"><a href="#id2532510">3.4. Arithmetic Opcodes</a></span></dt><dt><span class="section"><a href="#id2533435">3.5. Conditional Branch Opcodes</a></span></dt></dl></dd><dt><span class="section"><a href="#id2534683">4. List of Network Packets</a></span></dt><dd><dl><dt><span class="section"><a href="#id2534697">4.1. <code class="literal">CallPacket</code></a></span></dt><dt><span class="section"><a href="#id2534839">4.2. <code class="literal">EventPacket</code></a></span></dt><dt><span class="section"><a href="#id2534967">4.3. <code class="literal">DataPacket</code></a></span></dt><dt><span class="section"><a href="#id2535129">4.4. <code class="literal">SendBackPacket</code></a></span></dt><dt><span class="section"><a href="#id2535271">4.5. <code class="literal">FeaturePacket</code></a></span></dt><dt><span class="section"><a href="#id2535421">4.6. <code class="literal">CryptPacket</code></a></span></dt><dt><span class="section"><a href="#id2535536">4.7. <code class="literal">DebugPacket</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2535654">5. List of Client Features</a></span></dt><dt><span class="section"><a href="#id2536356">6. List of Native Functions</a></span></dt><dd><dl><dt><span class="section"><a href="#id2536387">6.1. <code class="literal">CALL_NOOP</code></a></span></dt><dt><span class="section"><a href="#id2536406">6.2. <code class="literal">CALL_SEND_EVENT</code></a></span></dt><dt><span class="section"><a href="#id2536461">6.3. <code class="literal">CALL_SEND_USER_EVENT</code></a></span></dt><dt><span class="section"><a href="#id2536518">6.4. <code class="literal">CALL_SEND_DATA</code></a></span></dt><dt><span class="section"><a href="#id2536555">6.5. <code class="literal">CALL_MEMCPY</code></a></span></dt><dt><span class="section"><a href="#id2536601">6.6. <code class="literal">CALL_MEMSET</code></a></span></dt><dt><span class="section"><a href="#id2536647">6.7. <code class="literal">CALL_QSORT</code></a></span></dt><dt><span class="section"><a href="#id2536704">6.8. <code class="literal">CALL_ENTER_LINEMODE</code></a></span></dt><dt><span class="section"><a href="#id2536812">6.9. <code class="literal">CALL_CREATE_RESOURCE</code></a></span></dt><dt><span class="section"><a href="#id2536912">6.10. <code class="literal">CALL_LOAD_RESOURCE</code></a></span></dt><dt><span class="section"><a href="#id2536985">6.11. <code class="literal">CALL_CLEAR_AREA</code></a></span></dt><dt><span class="section"><a href="#id2537054">6.12. <code class="literal">CALL_CREATE_IMAGE</code></a></span></dt><dt><span class="section"><a href="#id2537164">6.13. <code class="literal">CALL_CREATE_IMAGE_FR</code></a></span></dt><dt><span class="section"><a href="#id2537268">6.14. <code class="literal">CALL_SET_RENDER_TARGET</code></a></span></dt><dt><span class="section"><a href="#id2537302">6.15. <code class="literal">CALL_DEFINE_IMAGE_TILING</code></a></span></dt><dt><span class="section"><a href="#id2537381">6.16. <code class="literal">CALL_RENDER_IMAGE</code></a></span></dt><dt><span class="section"><a href="#id2537447">6.17. <code class="literal">CALL_SET_ENCRYPTION</code></a></span></dt><dt><span class="section"><a href="#id2537584">6.18. <code class="literal">CALL_LOAD_PACKAGE</code></a></span></dt><dt><span class="section"><a href="#id2537624">6.19. <code class="literal">CALL_MAP_MEM</code></a></span></dt><dt><span class="section"><a href="#id2537669">6.20. <code class="literal">CALL_DEBUG_PRINT</code></a></span></dt><dt><span class="section"><a href="#id2537696">6.21. <code class="literal">CALL_ALERT</code></a></span></dt><dt><span class="section"><a href="#id2537826">6.22. <code class="literal">CALL_CREATE_SOUND</code></a></span></dt><dt><span class="section"><a href="#id2537893">6.23. <code class="literal">CALL_CREATE_SOUND_FR</code></a></span></dt><dt><span class="section"><a href="#id2537942">6.24. <code class="literal">CALL_PLAY_SOUND</code></a></span></dt><dt><span class="section"><a href="#id2537985">6.25. <code class="literal">CALL_REMOVE_RESOURCES</code></a></span></dt><dt><span class="section"><a href="#id2538054">6.26. <code class="literal">CALL_GET_FEATURE</code></a></span></dt><dt><span class="section"><a href="#id2538082">6.27. <code class="literal">CALL_RESET</code></a></span></dt><dt><span class="section"><a href="#id2538197">6.28. <code class="literal">CALL_GENERATE_RANDOM</code></a></span></dt><dt><span class="section"><a href="#id2538238">6.29. <code class="literal">CALL_SET_MULTICALL</code></a></span></dt><dt><span class="section"><a href="#id2538336">6.30. <code class="literal">CALL_DO_MULTICALL</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2538379">7. Debugging (obsolete)</a></span></dt><dd><dl><dt><span class="section"><a href="#id2538385">7.1. Setup</a></span></dt><dt><span class="section"><a href="#id2538498">7.2. Commands to server</a></span></dt><dt><span class="section"><a href="#id2538634">7.3. Commands to client</a></span></dt><dt><span class="section"><a href="#id2539056">7.4. Results from client</a></span></dt></dl></dd></dl></dd><dt><span class="appendix"><a href="#id2539375">A. Assembler Examples</a></span></dt><dd><dl><dt><span class="section"><a href="#id2539380">1. Drawline</a></span></dt></dl></dd></dl></div><div class="article" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="id2501014"></a>Overview</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id2496997">1. Introduction</a></span></dt><dt><span class="section"><a href="#id2522660">2. Memory</a></span></dt><dd><dl><dt><span class="section"><a href="#id2488377">2.1. Memory Introduction</a></span></dt><dt><span class="section"><a href="#id2513513">2.2. Virtual Memory</a></span></dt><dt><span class="section"><a href="#id2508435">2.3. Data Sendback</a></span></dt><dt><span class="section"><a href="#id2529685">2.4. Register usage</a></span></dt></dl></dd><dt><span class="section"><a href="#id2522274">3. Execution Unit</a></span></dt><dt><span class="section"><a href="#id2520627">4. Resources &amp; Packages</a></span></dt><dd><dl><dt><span class="section"><a href="#id2528203">4.1. Resources Introduction</a></span></dt><dt><span class="section"><a href="#id2523678">4.2. Naming</a></span></dt><dt><span class="section"><a href="#id2513743">4.3. Management</a></span></dt><dt><span class="section"><a href="#id2516917">4.4. Loading</a></span></dt><dt><span class="section"><a href="#id2528558">4.5. Packages</a></span></dt></dl></dd><dt><span class="section"><a href="#id2514135">5. Native Calls</a></span></dt><dd><dl><dt><span class="section"><a href="#id2511018">5.1. Native Calls Introduction</a></span></dt><dt><span class="section"><a href="#id2512916">5.2. Multicalls</a></span></dt></dl></dd><dt><span class="section"><a href="#id2524301">6. Graphics</a></span></dt><dt><span class="section"><a href="#id2513656">7. Sound</a></span></dt><dt><span class="section"><a href="#id2523201">8. Events &amp; Exceptions</a></span></dt><dd><dl><dt><span class="section"><a href="#id2504216">8.1. Events</a></span></dt><dt><span class="section"><a href="#id2523461">8.2. Exceptions</a></span></dt></dl></dd><dt><span class="section"><a href="#id2512006">9. Features</a></span></dt><dt><span class="section"><a href="#id2509983">10. Protocol</a></span></dt><dt><span class="section"><a href="#id2521545">11. Client startup &amp; flow</a></span></dt></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2496997"></a>1. Introduction</h2></div></div></div><p>The core of the Swimmer technology is the client, which can also
+      be seen as the <span class="emphasis"><em>slave</em></span> or
+      <span class="emphasis"><em>terminal</em></span> in the system.</p><p>The Swimmer Client is a light weight application that can be run
+      on most platforms, but the primary target are portable devices. This
+      Target device is expected to have a display, a network connection and
+      some sort of input system (at least a telephone keyset or a 4-way joypad
+      with action buttons or similar).</p><p>The client connects to a server and then runs a normal application
+      loop. Any events (key presses, mouse clicks, timer events etc) are sent
+      to the Virtual Machine to be handled. Initially, most events results in
+      an event packet being sent to the server, so a swimmer application can
+      be entirely located on the server side, with the client only acting as a
+      dumb terminal.</p><p>The server controls the client, and can send data into the memory
+      of the virtual machine; graphics, sound or other content goes into data
+      memory, while machine code to be executed goes into program
+      memory.</p><p>A typical swimmer application will execute the main bulk of the
+      logic on the server side, while display code and other logic that runs
+      in realtime is implemented in Swimmer Machine Code and sent down to the
+      client.</p><p>For instance, in a 2D game where players can move over a giant
+      world, the client renders the background of the current screen, moves
+      the player around depending on key presses, and checks collision. The
+      server decides when it is time to scroll and generates and sends down
+      new data representing the immediate surroundings. From the clients point
+      of view it is a simple one-screen game with a few sprites and tiles to
+      be rendered. On the server side the game can be as complex as needed -
+      for instance implementing a large, multiplayer environment.</p><p>NOTE: Most constants defined in this document are only referred to
+      by symbolic values. There actual values are defined in the
+      <code class="filename">swimmer.const</code> file in the standard Swimmer client
+      source code.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2522660"></a>2. Memory</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2488377"></a>2.1. Memory Introduction</h3></div></div></div><p>There are six types of memory which can all be written to
+        directly by a swimmer server;</p><div class="itemizedlist"><ul type="disc"><li><p>Data Memory</p></li><li><p>Program Memory</p></li><li><p>The Vector Table</p></li><li><p>IO Memory</p></li><li><p>Resource Memory</p></li><li><p>Registers</p></li></ul></div><p><span class="emphasis"><em>Data Memory</em></span> is the main chunk of memory. It
+        will contain most of the non-resource data. The first part of the Data
+        Memory is the Zero Page, which is normally used for constants and
+        global variables since it is easily accessible by the Execution Unit,
+        although registers are better in most cases.</p><p><span class="emphasis"><em>Program Memory</em></span> holds <span class="emphasis"><em>Swimmer
+        Machine Code</em></span>, and can be the target of pointers in the
+        Vector Table.</p><p>The <span class="emphasis"><em>Vector Table</em></span> is 256 words that points
+        to code - either through an offset into Program Memory or by referring
+        to a specific <span class="emphasis"><em>Native Function</em></span>. The vector table
+        is used whenever an event occurs or a CALL opcode is executed by the
+        Execution Unit.</p><p><span class="emphasis"><em>IO Memory</em></span> is a small set of registers that
+        gives access to such things as displaymode, cliparea, timers and
+        network info. It can be seen as a set of memory mapped &#8220;hardware&#8221;
+        registers.</p><p><span class="emphasis"><em>Resource Memory</em></span> is not physically mapped
+        memory, but is instead a virtual mapping to the latest created or
+        loaded resource. This allows the server to send the contents of a
+        resource through normal data packets. It also allows the client to
+        access a resource through direct memory access instead of reading it
+        explicitly (similar to the posix
+        <code class="literal">mmap()</code>-function).</p><p>There are also 256 general purpose
+        <span class="emphasis"><em>Registers</em></span> inside the execution unit that is also
+        considered memory. It is used for temporary storage when executing
+        swimmer code, as the arguments for native (and non-native) functions
+        and as global variables that can be set and read by both server and
+        client.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2513513"></a>2.2. Virtual Memory</h3></div></div></div><p>Whenever Data memory is referenced, addresses are translated
+        through a Virtual Memory System. When the client starts up, only two
+        mappings exist - the zero page (initially 256 words) and the IO
+        Memory.</p><p>The Virtual Memory works like this:</p><div class="itemizedlist"><ul type="disc"><li><p>The client keeps a list of 256 <span class="emphasis"><em>banks</em></span>.
+            Each bank refers to a Memory section. Each bank also defines that
+            that memory as 8, 16 or 32 bit.</p></li><li><p>Whenever a Virtual Address is used, the top 8 bits are taken
+            to be the bank number, and the bottom 24 bits are the offset into
+            the memory the bank points to, counted in units of the bit size of
+            that bank.</p></li><li><p>The server can create a new mapping by calling the native
+            function <code class="literal">CALL_MAP_MEM</code>. When mapping new Data
+            Memory, a new section of the given size is allocated and pointed
+            to by the given bank. For other types of memory, then bank simply
+            refers to the start of that memory after the call.</p></li></ul></div><p>The client initially maps bank <code class="literal">0x00</code> to a
+        32bit Data Memory area of 256 words, and bank <code class="literal">0x60</code>
+        to IO Memory. This mapping should also be reset after a call to
+        <span class="emphasis"><em>CALL_RESET</em></span>.</p><p>If a bank pointing to data memory is remapped (by calling
+        <code class="literal">CALL_MAP_MEM</code> again with the same bank as argument),
+        the old memory area will be freed.</p><p>The bitsize and length are really only considered when mapping
+        data memory, since those attributes are fixed for other types of
+        memory.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2508435"></a>2.3. Data Sendback</h3></div></div></div><p>This is a list of sequences in Data Memory that should be sent
+        back to the server whenever they are changed. This is typically
+        implemented by keeping a copy of all affected memory words and
+        comparing differences and sending them (once each application loop,
+        after events have been handled). A server sets up these sequences
+        through a <code class="literal">CMD_SENDBACK</code> command.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2529685"></a>2.4. Register usage</h3></div></div></div><p>The 256 Registers are used frequently in the swimmer client. The
+        lower registers are treated differently from the higher ones - mainly;
+        the lower 16 registers are potentially overwritten by event and
+        function calls, and should never contain any global state. R[16] and
+        upwards are only changed by application code. Normally an application
+        allocates global variables starting with R[255] and going down, and
+        uses the lower registers for temporary storage in machine code.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2522274"></a>3. Execution Unit</h2></div></div></div><p>The <span class="emphasis"><em>Swimmer Execution Unit</em></span> - from hereon
+      referred to as the <span class="emphasis"><em>EU</em></span> - is the processor of the
+      virtual machine that is part of the Swimmer Client. It executes Swimmer
+      Code that is present in Program Memory. Each opcode is 32bit in
+      size.</p><p>Code in program memory is only executed as a result of an event or
+      a call packet from the server. The client works with a single thread so
+      when the EU is interpreting code the client will not be able to do
+      anything else. If the swimmer client spends too much time executing code
+      (so that the number of opcodes executed reaches the value in
+      <code class="literal">IO_MAXCYCLES</code>) an exception is generated.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2520627"></a>4. Resources &amp; Packages</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2528203"></a>4.1. Resources Introduction</h3></div></div></div><p>A Swimmer <span class="emphasis"><em>Resource</em></span> is a persistent peace of
+        data that the client can read into memory or directly create images
+        and sounds from. Resources are created using the
+        <code class="literal">CALL_CREATE_RESOURCE</code> native call and populated
+        either directly from memory or through subsequent
+        <code class="literal">CMD_WRITEMEM</code> packets to
+        <code class="literal">RESOURCE_MEM</code>.</p><p>Once a resource has been created, it can be loaded into memory
+        with <code class="literal">CALL_LOAD_RESOURCE</code>, or used to create an image
+        with <code class="literal">CALL_CREATE_IMAGE_FR</code>, or a sound using
+        <code class="literal">CALL_CREATE_SOUND_FR</code>.</p><p>The normal way for a server to send and create resources on a
+        client is to first just assume that it is already there and try
+        calling <code class="literal">CALL_CREATE_IMAGE_FR</code> for instance. If the
+        call fails, the server creates and sends the resource, and tries
+        again.</p><p>All resources have a type, which is a 32bit identifier stored
+        with the resource (normally as the first 4 bytes), telling the client
+        how to handle it.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2523678"></a>4.2. Naming</h3></div></div></div><p>Resources are referred to using a combination a textual name and
+        an md5 checksum, either or both of which can be specified. It is
+        usually best to create resources using both, and load them using only
+        the checksum. That way you can make sure old resources are discarded
+        and replaced by updated resources from the server.</p><p>The textual name can then be used when removing resources; it is
+        for instance possible to remove all resources with the same name
+        <span class="emphasis"><em>except</em></span> for the one with the given MD5 - this is
+        how you remove all old versions of a resource but keep the current
+        one.</p><p>Resources that contains volatile data (settings, highscores) are
+        normally only created and referred to by name.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2513743"></a>4.3. Management</h3></div></div></div><p>Resources are application specific, so they are normally be
+        stored as files in a directory named after the current
+        <span class="emphasis"><em>Application ID</em></span>. They could be stored in any way
+        though, as long as the resources are kept separate.</p><p>Recommended naming: <code class="filename">&lt;resource
+        directory&gt;/&lt;appid&gt;/&lt;md5&gt;=&lt;name&gt;</code></p><p>An exception to this rule can be made when reading a resource
+        using the MD5 checksum. If another application has a resource with the
+        same checksum they will by definition have the same content so there
+        is no security issues with reading the file, even though it resides in
+        another applications storage.</p><p>If persistent memory is running low, a client is expected to
+        remove the resources that has not been accessed for the longest time,
+        but <span class="emphasis"><em>only</em></span> <span class="emphasis"><em>those</em></span> who have
+        checksums (since a checksum indicates a non volatile resource that
+        most likely exists on the server and can be sent again).</p><p>If runtime memory is running low, a client could use a resource
+        cache and flush out unused resources and load them again when
+        used.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2516917"></a>4.4. Loading</h3></div></div></div><p>A resource can be loaded directly into memory, whole or in
+        parts, using <code class="literal">CALL_LOAD_RESOURCE</code>. Plain binary
+        (RTYPE_RAW) resources are loaded directly without conversion
+        (endianess are assumed to match the client).</p><p>If a resource has the type <code class="literal">RTYPE_GZIP</code> it is
+        assumed to be gzip compressed, raw 8 bit data. The file offset and
+        size refers to the unpacked file in this case.</p><p>If the client supports stream formats, loading such a resource
+        into memory should also decompress/convert this data to raw. This lets
+        the client, for instance, use large MP3 resources and stream from
+        them.</p><p>(Note that if you instead create a <span class="emphasis"><em>sound
+        resource</em></span> from an MP3, the data is normally
+        <span class="emphasis"><em>not</em></span> decompressed but played directly as
+        MP3).</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2528558"></a>4.5. Packages</h3></div></div></div><p>A Package is a special type of resource that contains a stream
+        of network packets. It can be used by the server to cache data that
+        does not fit into a general resource (Code in program memory,
+        sequences of calls etc). It is also the method used to create offline
+        applications for Swimmer.</p><p>A package has the resource type <code class="literal">RTYPE_PACKAGE</code>
+        and is normally only used by the <code class="literal">CALL_LOAD_PACKAGE</code>
+        native call. The effect is exactly like the packages where sent from
+        the server (except all packages are handled at once, no code or
+        rendering is allowed to take place in between).</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2514135"></a>5. Native Calls</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2511018"></a>5.1. Native Calls Introduction</h3></div></div></div><p>Native calls are the way you perform system specific functions
+        on a client, such as draw on the screen, play sounds, allocate memory
+        and send network data. There are also native calls for functions that
+        could be implemented using machine code, but is much faster as a
+        native function (such as memset or memcopy).</p><p>A native function can be called directly from the server by
+        sending a CallPacket, or from machine code by placing the arguments
+        into the corresponding registers and executing the CALL opcode.</p><p>In the case of the CALL opcode, the call is not taken directly;
+        instead the given numeric argument is used too look up the 32bit value
+        at that offset in the vector table. If this value is &lt;
+        <code class="literal">0x7FFFFFFF</code> it is taken as an offset into program
+        memory where execution should continue, but if the high bit is set,
+        the lower bits indicate the number of the native function that should
+        be called.</p><p><code class="literal">R[0]</code> is used as return value for the
+        functions that returns a value. All other registers are left
+        unchanged. For functions returning no value, <span class="emphasis"><em>all</em></span>
+        registers are left unchanged.</p><p>Some functions generates results - they do so by generating a
+        <code class="literal"><code class="literal">VEC_RESULT</code></code> event with the return
+        code in <code class="literal">R[2]</code> and the key argument (an argument the
+        identifies the original call, like the image number) in R[3]. R[0] to
+        R[3] are saved before inserting arguments, and restored after the
+        event was handled.</p><p>Some functions that are not necessary can be left unimplemented
+        on certain clients (like <code class="literal">CALL_DEBUG_PRINT</code> on a
+        device with no logging capabilities) - in that case it should be
+        treated like a noop and silently do nothing.</p><p>A call to an unknown function should generate a
+        RC_ERR_CALL_NOT_FOUND result. This way a server can test for certain
+        functions that may or may not be implemented.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2512916"></a>5.2. Multicalls</h3></div></div></div><p>Multicalls are a special type of native calls - they let you
+        call any native call (referred to as the target call) a multiple
+        number of times with one single call.</p><p>Only native calls with 6 or less arguments are supported. R[6]
+        contains either the target call or the call count.</p><p>A multicall is first set up using the
+        <code class="literal">CALL_SET_MULTICALL</code> and then performed using the
+        <code class="literal">CALL_DO_MULTICALL</code>. For
+        <code class="literal">CALL_SET_MULTICALL</code> you specify the actual target
+        call, how the arguments should be interpreted, and how they should be
+        modified after each successive target call. For
+        <code class="literal">CALL_SET_MULTICALL</code> you specify the initial values
+        of the arguments, and the number of times you want to call the target
+        call.</p><p>Each argument is incremented or decremented by a specific value
+        for each target call.</p><p>Each argument can also either be used directly (a normal
+        constant) or indirectly. In the latter case, the argument is a pointer
+        into data memory where the actual value for the call resides.</p><p>For instance, using an increment that is a multiple of the
+        screen width as the Y value of a rendering call lets you render a
+        horizontal stretch (of images for instance). Or combining an indirect
+        argument with an increment of 1 lets you use a list of
+        arguments.</p><p><span class="bold"><strong>How multicalls are
+        performed</strong></span></p><p>When <code class="literal">CALL_SET_MULTICALL</code> is called, the first
+        7 arguments are saved into internal registers (referred to as
+        <span class="emphasis"><em>MC[0]</em></span> to <span class="emphasis"><em>MC[5]</em></span> and
+        <span class="emphasis"><em>TargetCall</em></span>, respectively).
+        <code class="literal">IO_XDIVIDER</code> and <code class="literal">IO_YDIVIDER</code> are
+        saved into <span class="emphasis"><em>MCX</em></span> and
+        <span class="emphasis"><em>MXY</em></span>.</p><p>When <code class="literal">CALL_DO_MULTICALL</code> is called,
+        <code class="literal">TargetCall</code> is executed <code class="literal">R[6]</code>
+        number of times, in this way;</p><pre class="programlisting">
+// S24(x) = Sign extend from 24bit
+
+count = R[6]
+
+for(i=0; i&lt;6; i++)
+{
+  if(MC[i] &amp; MC_INDIRECT)
+  {
+    B[i] = R[i] &amp; 0xff000000
+    S[i] = R[i] &amp; 0x00ffffff
+  }
+  else
+    S[i] = R[i]
+}
+
+while(count--)
+{
+  for(i=0; i&lt;6; i++)
+  {
+    divider = 1
+    if(MC[i] &amp; MC_XDIV)
+      divider *= MCX
+    if(MC[i] &amp; MC_YDIV)
+      divider *= MCY
+
+    if(MC[i] &amp; MC_INDIRECT)
+      R[i] = GetWord(B[i] | (S[i] / divider))
+    else
+      R[i] = S[i] / divider
+  }
+
+  Call(TargetCall)
+
+  for(i=0; i&lt;6; i++)
+      S[i] += S24(MC[i] &amp; 0xffffff)
+}</pre></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2524301"></a>6. Graphics</h2></div></div></div><p>The only way to display graphics on a client is by rendering
+      <span class="emphasis"><em>Images</em></span> or rectangles.</p><p>...</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2513656"></a>7. Sound</h2></div></div></div><p></p><p>...</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2523201"></a>8. Events &amp; Exceptions</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2504216"></a>8.1. Events</h3></div></div></div><p>The swimmer virtual machine generates
+        <span class="emphasis"><em>Events</em></span> whenever something occurs that may be of
+        interest to the application, such as a key press or the timer reaching
+        a trigger value. </p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2523461"></a>8.2. Exceptions</h3></div></div></div><p>The Swimmer virtual machine generates
+        <span class="emphasis"><em>Exceptions</em></span> as a response to special conditions
+        (normally errors) that can occur, such as illegal accesses to memory
+        or trying to render an image that does not exist.</p><p>This is what happens when an exception is triggered;</p><div class="itemizedlist"><ul type="disc"><li><p>If <code class="literal">IO_EXCP_EX</code> is not zero, the exception
+            becomes <span class="emphasis"><em>Fatal</em></span>, normally causing the
+            application to exit.</p></li><li><p>The current state is stored into the
+            <code class="literal">IO_EXCP</code> registers (the exception number, the
+            current program counter, the current native call (if any), and the
+            memory adress accessed (if any).</p></li><li><p>The stack pointer is set to zero.</p></li><li><p>If
+            <code class="literal">VECTORS</code>[<code class="literal">VEC_EXCEPTION</code>]
+            points to a native call, r0 to r1 is set to
+            <code class="literal">VEC_EXCEPTION</code>, <code class="literal">IO_EXCP_EX</code>,
+            <code class="literal">IO_EXCP_PC</code> and <code class="literal">IO_EXCP_CALL</code>
+            respectivly.</p></li><li><p>A <code class="literal">VEC_EXCEPTION</code> event is triggered,
+            causing the code or native call referred to by
+            <code class="literal">VECTORS</code>[<code class="literal">VEC_EXCEPTION</code>] to be
+            executed.</p></li></ul></div><p>At this point, the application loop continues, and EU code is
+        not allowed to run until <code class="literal">IO_EXCP_EX</code> is zero. Note
+        that this condition can not be present during the
+        <code class="literal">VEC_EXCEPTION</code> handling, because then any exception
+        handling code would not be allowed to run.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2512006"></a>9. Features</h2></div></div></div><p>Whenever a client connects, the first thing it does is send a
+      <code class="literal">FeaturePacket</code>, which will tell the server the
+      features and capabilities of the client, so that it can adapt its
+      content to it.</p><p>...</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2509983"></a>10. Protocol</h2></div></div></div><p>The Swimmer Protocol is what defines how data is sent between the
+      client and server over the network. It is based on a small number of
+      Packets, each with the same 32bit header.</p><p>...</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2521545"></a>11. Client startup &amp; flow</h2></div></div></div><p>This section describes the general startup procedure and main
+      application loop of a Swimmer Client.</p></div></div><div class="article" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="id2530789"></a>Reference</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id2520774">1. List of IO Registers</a></span></dt><dt><span class="section"><a href="#id2501059">2. List of Events</a></span></dt><dd><dl><dt><span class="section"><a href="#id2511424">2.1. <code class="literal">VEC_VBLANK</code></a></span></dt><dt><span class="section"><a href="#id2518906">2.2. <code class="literal">VEC_KEYPRESS</code></a></span></dt><dt><span class="section"><a href="#id2514722">2.3. <code class="literal">VEC_SCREENCLICK</code></a></span></dt><dt><span class="section"><a href="#id2521050">2.4. <code class="literal">VEC_TEXTLINE</code></a></span></dt><dt><span class="section"><a href="#id2523010">2.5. <code class="literal">VEC_TIMER</code></a></span></dt><dt><span class="section"><a href="#id2515728">2.6. <code class="literal">VEC_RESULT</code></a></span></dt><dt><span class="section"><a href="#id2515877">2.7. <code class="literal">VEC_EXCEPTION</code></a></span></dt><dt><span class="section"><a href="#id2508996">2.8. <code class="literal">VEC_EXTERNAL</code></a></span></dt><dt><span class="section"><a href="#id2523875">2.9. <code class="literal">VEC_NETSTATE</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2524683">3. List of Opcodes</a></span></dt><dd><dl><dt><span class="section"><a href="#id2527588">3.1. Zeropage opcodes</a></span></dt><dt><span class="section"><a href="#id2475813">3.2. Miscellaneous Opcodes</a></span></dt><dt><span class="section"><a href="#id2491262">3.3. Memory Opcodes</a></span></dt><dt><span class="section"><a href="#id2532510">3.4. Arithmetic Opcodes</a></span></dt><dt><span class="section"><a href="#id2533435">3.5. Conditional Branch Opcodes</a></span></dt></dl></dd><dt><span class="section"><a href="#id2534683">4. List of Network Packets</a></span></dt><dd><dl><dt><span class="section"><a href="#id2534697">4.1. <code class="literal">CallPacket</code></a></span></dt><dt><span class="section"><a href="#id2534839">4.2. <code class="literal">EventPacket</code></a></span></dt><dt><span class="section"><a href="#id2534967">4.3. <code class="literal">DataPacket</code></a></span></dt><dt><span class="section"><a href="#id2535129">4.4. <code class="literal">SendBackPacket</code></a></span></dt><dt><span class="section"><a href="#id2535271">4.5. <code class="literal">FeaturePacket</code></a></span></dt><dt><span class="section"><a href="#id2535421">4.6. <code class="literal">CryptPacket</code></a></span></dt><dt><span class="section"><a href="#id2535536">4.7. <code class="literal">DebugPacket</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2535654">5. List of Client Features</a></span></dt><dt><span class="section"><a href="#id2536356">6. List of Native Functions</a></span></dt><dd><dl><dt><span class="section"><a href="#id2536387">6.1. <code class="literal">CALL_NOOP</code></a></span></dt><dt><span class="section"><a href="#id2536406">6.2. <code class="literal">CALL_SEND_EVENT</code></a></span></dt><dt><span class="section"><a href="#id2536461">6.3. <code class="literal">CALL_SEND_USER_EVENT</code></a></span></dt><dt><span class="section"><a href="#id2536518">6.4. <code class="literal">CALL_SEND_DATA</code></a></span></dt><dt><span class="section"><a href="#id2536555">6.5. <code class="literal">CALL_MEMCPY</code></a></span></dt><dt><span class="section"><a href="#id2536601">6.6. <code class="literal">CALL_MEMSET</code></a></span></dt><dt><span class="section"><a href="#id2536647">6.7. <code class="literal">CALL_QSORT</code></a></span></dt><dt><span class="section"><a href="#id2536704">6.8. <code class="literal">CALL_ENTER_LINEMODE</code></a></span></dt><dt><span class="section"><a href="#id2536812">6.9. <code class="literal">CALL_CREATE_RESOURCE</code></a></span></dt><dt><span class="section"><a href="#id2536912">6.10. <code class="literal">CALL_LOAD_RESOURCE</code></a></span></dt><dt><span class="section"><a href="#id2536985">6.11. <code class="literal">CALL_CLEAR_AREA</code></a></span></dt><dt><span class="section"><a href="#id2537054">6.12. <code class="literal">CALL_CREATE_IMAGE</code></a></span></dt><dt><span class="section"><a href="#id2537164">6.13. <code class="literal">CALL_CREATE_IMAGE_FR</code></a></span></dt><dt><span class="section"><a href="#id2537268">6.14. <code class="literal">CALL_SET_RENDER_TARGET</code></a></span></dt><dt><span class="section"><a href="#id2537302">6.15. <code class="literal">CALL_DEFINE_IMAGE_TILING</code></a></span></dt><dt><span class="section"><a href="#id2537381">6.16. <code class="literal">CALL_RENDER_IMAGE</code></a></span></dt><dt><span class="section"><a href="#id2537447">6.17. <code class="literal">CALL_SET_ENCRYPTION</code></a></span></dt><dt><span class="section"><a href="#id2537584">6.18. <code class="literal">CALL_LOAD_PACKAGE</code></a></span></dt><dt><span class="section"><a href="#id2537624">6.19. <code class="literal">CALL_MAP_MEM</code></a></span></dt><dt><span class="section"><a href="#id2537669">6.20. <code class="literal">CALL_DEBUG_PRINT</code></a></span></dt><dt><span class="section"><a href="#id2537696">6.21. <code class="literal">CALL_ALERT</code></a></span></dt><dt><span class="section"><a href="#id2537826">6.22. <code class="literal">CALL_CREATE_SOUND</code></a></span></dt><dt><span class="section"><a href="#id2537893">6.23. <code class="literal">CALL_CREATE_SOUND_FR</code></a></span></dt><dt><span class="section"><a href="#id2537942">6.24. <code class="literal">CALL_PLAY_SOUND</code></a></span></dt><dt><span class="section"><a href="#id2537985">6.25. <code class="literal">CALL_REMOVE_RESOURCES</code></a></span></dt><dt><span class="section"><a href="#id2538054">6.26. <code class="literal">CALL_GET_FEATURE</code></a></span></dt><dt><span class="section"><a href="#id2538082">6.27. <code class="literal">CALL_RESET</code></a></span></dt><dt><span class="section"><a href="#id2538197">6.28. <code class="literal">CALL_GENERATE_RANDOM</code></a></span></dt><dt><span class="section"><a href="#id2538238">6.29. <code class="literal">CALL_SET_MULTICALL</code></a></span></dt><dt><span class="section"><a href="#id2538336">6.30. <code class="literal">CALL_DO_MULTICALL</code></a></span></dt></dl></dd><dt><span class="section"><a href="#id2538379">7. Debugging (obsolete)</a></span></dt><dd><dl><dt><span class="section"><a href="#id2538385">7.1. Setup</a></span></dt><dt><span class="section"><a href="#id2538498">7.2. Commands to server</a></span></dt><dt><span class="section"><a href="#id2538634">7.3. Commands to client</a></span></dt><dt><span class="section"><a href="#id2539056">7.4. Results from client</a></span></dt></dl></dd></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2520774"></a>1. List of IO Registers</h2></div></div></div><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">IO_APPID</code></td><td>128bit</td><td><p>Unique application ID. May only be written by the
+                server. Should preferably be completely random number
+                generated once and for all on the server side, and kept static
+                throughout the application's lifetime.</p><p>The client
+                normally uses this ID to tag created resources, so that two
+                resources with the same name will not collide, as long as they
+                are created by different applications.</p></td></tr><tr><td><code class="literal">IO_TIMER</code></td><td>32bit</td><td><p>A microsecond timer that can be both read and
+                written. The server will typically write to it when it is
+                trying to synchronize all clients to the same "time
+                space".</p><p>The timer value is also automatically sent
+                along with Event packets to the server.</p></td></tr><tr><td><code class="literal">IO_TIMER_TRIGGER</code></td><td>32bit</td><td><p>When <code class="literal">IO_TIMER</code> ==
+                <code class="literal">IO_TTRIGGER</code>, a
+                <code class="literal">TIMER_EVENT</code> will be generated on the
+                client.</p></td></tr><tr><td><code class="literal">IO_SERVERIP</code></td><td>32bit</td><td><p>The server to connect to, the next time a
+                connection is made. Redirection works by the server sending a
+                new IP to this memory and then simply disconnecting the
+                client.</p><p>A value of zero indicates that connection
+                should be made to the default or initial server (specified on
+                the command line or in a configuration file for
+                instance).</p></td></tr><tr><td><code class="literal">IO_SERVERPORT</code></td><td>32bit</td><td><p>The port for the connection, works like the
+                IP.</p></td></tr><tr><td><code class="literal">IO_CYCLES</code></td><td>32bit</td><td><p>Counts up for each cycle executed. Used for
+                benchmarking. May be unavailable in non-debug versions of the
+                client, for perfomance reasons.</p></td></tr><tr><td><code class="literal">IO_MAXCYCLES</code></td><td>32bit</td><td><p>Maximum number of cycles the execution unit is
+                allowed to run, before returning back to the client. If this
+                value is exceeded, an <code class="literal">EXCP_MAX_CYCLES</code>
+                exception is generated.</p></td></tr><tr><td><code class="literal">IO_GAMEPAD</code></td><td>32bit</td><td>Indicates which of the basic gamepad keys are pressed.
+                At least <code class="literal">GPAD_RIGHT</code>,
+                <code class="literal">GPAD_LEFT</code>, <code class="literal">GPAD_UP</code>,
+                <code class="literal">GPAD_DOWN</code> and
+                <code class="literal">GPAD_ACTION</code> are available.</td></tr><tr><td><code class="literal">IO_POINTERX</code></td><td>32bit</td><td>The current X coordinate of the pointer device (touch
+                screen or mouse).</td></tr><tr><td><code class="literal">IO_POINTERY</code></td><td>32bit</td><td>The current Y coordinate of the pointer device.</td></tr><tr><td><code class="literal">IO_POINTERBTN</code></td><td>32bit</td><td>The button state of the pointer device. Lowest bit is
+                first (left) button etc.</td></tr><tr><td><code class="literal">IO_DISPLAYMODE</code></td><td>32bit</td><td><p>Read or write the display mode;
+                <code class="literal">0</code> means single buffered and
+                <code class="literal">1</code> means double buffered.</p><p>Single
+                buffered is the mode the client uses per default, and mean
+                either that it uses a single screen buffer and all graphic
+                operation becomes instantly visible, or it uses two buffers
+                where the back buffer is copied to front buffer as necessary.
+                In both cases no special care needs to be taken when
+                rendering, the client can rely on that graphcis stays on the
+                screen between <code class="literal">VEC_VBLANK</code>
+                events.</p><p>Double buffering means the client may use
+                two buffers and flip between them, for maximum efficiency.
+                This means the client code needs to redraw the entire screen
+                each frame (each time <code class="literal">VEC_VBLANK</code> is
+                called).</p></td></tr><tr><td><code class="literal">IO_CLIPX0</code></td><td>32bit</td><td><p>Clip coordinate for image rendering. Defaults to
+                0.</p></td></tr><tr><td><code class="literal">IO_CLIPY0</code></td><td>32bit</td><td><p>Clip coordinate for image rendering. Defaults to
+                0.</p></td></tr><tr><td><code class="literal">IO_CLIPX1</code></td><td>32bit</td><td><p>Clip coordinate for image rendering. Defaults to
+                the screen width.</p></td></tr><tr><td><code class="literal">IO_CLIPY0</code></td><td>32bit</td><td><p>Clip coordinate for image rendering. Defaults to
+                the screen height.</p></td></tr><tr><td><code class="literal">IO_NETSTATE</code></td><td>32bit</td><td><p>Current state of the Network. The following
+                values can be
+                read/written:</p><p><code class="literal">NS_DISCONNECTED</code> -
+                The client is disconnected and will not try to
+                connect.</p><p><code class="literal">NS_CONNECTING</code> - The
+                client is disconnected but will try to connect to
+                <code class="literal">IO_SERVERIP</code>:<code class="literal">IO_SERVERPORT</code>.</p><p><code class="literal">NS_CONNECTED</code>
+                - Read only, the client is
+                connected.</p><p><code class="literal">NS_RESET</code> - Write
+                only, will cause the client to reset all memory and send the
+                feature packet again, just like a reconnect except it will not
+                close the socket. The actual network state should not change.
+                Note also that the feature packet is only sent if state was
+                <code class="literal">NS_CONNECTED</code>.</p><p><code class="literal">NS_QUIT</code>
+                - Write only, will cause the client to quit.</p></td></tr><tr><td><code class="literal">IO_BYTESSENT</code></td><td>32bit</td><td><p>Total number of bytes sent since client
+                started.</p></td></tr><tr><td><code class="literal">IO_BYTESRECVD</code></td><td>32bit</td><td><p>Total number of bytes received since client
+                started.</p></td></tr><tr><td><code class="literal">IO_SRAM</code></td><td>256bit</td><td><p>A read/write area in IO ram that is not cleared
+                when disconnecting/reconnecting. Typically used to send
+                information to a new server when redirecting.</p></td></tr><tr><td><code class="literal">IO_LATENCY</code></td><td>32bit</td><td><p>The latency (round trip time over the network, to
+                the server and back) in milliseconds.</p></td></tr><tr><td><code class="literal">IO_EXCP_EX</code></td><td>32bit</td><td>Set to zero during normal operation, and to an
+                exception value when an exception has occurred - the execution
+                unit will not run code when this is non-zero.</td></tr><tr><td><code class="literal">IO_EXCP_CALL</code></td><td>32bit</td><td>The native call in which the exception occurred, if
+                any.</td></tr><tr><td><code class="literal">IO_EXCP_ADR</code></td><td>32bit</td><td>The memory address of the last exception - only valid
+                for memory read/write exceptions.</td></tr><tr><td><code class="literal">IO_EXCP_PC</code></td><td>32bit</td><td>The current program counter if the EU was
+                running.</td></tr><tr><td><code class="literal">IO_XDIVIDER</code></td><td>32bit</td><td>This value is used to divide the X coordinate of all
+                rendering native calls. It defaults to 1.</td></tr><tr><td><code class="literal">IO_YDIVIDER</code></td><td>32bit</td><td>This value is used to divide the Y coordinate of all
+                rendering native calls. It defaults to 1.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2501059"></a>2. List of Events</h2></div></div></div><p><span class="bold"><strong>R[0]</strong></span> = Always contains the number
+      of the event.</p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2511424"></a>2.1. <code class="literal">VEC_VBLANK</code></h3></div></div></div><p>This event is sent once every application loop, which on
+        supported hardware should be once every time the screen refreshes, or
+        around 30 times per second. It is where you normally place your
+        rendering code.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2518906"></a>2.2. <code class="literal">VEC_KEYPRESS</code></h3></div></div></div><p>This event is sent as soon as the user presses or releases any
+        button on the device.</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[1]</strong></span> = Keycode (UNICODE
+          between 0x20 and 0xFFFF or a special key if 0x10000 and
+          above)</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Above 0 if a key was
+          pressed, 0 if released</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Device Number (0 for
+          keyboard, 1 for first gamepad and so on)</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2514722"></a>2.3. <code class="literal">VEC_SCREENCLICK</code></h3></div></div></div><p>This event is generated when a mouse button, touch screen or
+        other pointing device is pressed or released.</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[1]</strong></span> = X position (in
+          pixels)</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Y position (in
+          pixels)</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Above zero If
+          key/pen is down (pressure), 0 if up</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2521050"></a>2.4. <code class="literal">VEC_TEXTLINE</code></h3></div></div></div><p>This event is triggered when a line of text has been entered by
+        the user.</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[1]</strong></span> = Pointer to entered
+          text (same value as given when <code class="literal">VEC_ENTER_TEXTMODE</code>
+          was called).</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2523010"></a>2.5. <code class="literal">VEC_TIMER</code></h3></div></div></div><p>This event is triggered when the current timer value equals the
+        trigger value. To make the event occur continuously, the triggered
+        code should read out the trigger value
+        (<code class="literal">IO_TIMER_TRIGGER</code>) add the appropriate value and
+        write it back.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2515728"></a>2.6. <code class="literal">VEC_RESULT</code></h3></div></div></div><p>This event is sent to inform about the result of a previous
+        call, and exists so that the server can know the result of important
+        calls.</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[1]</strong></span> = Function (Call
+          vector) that generated the result.</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Return code</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Key argument (Meant
+          to identify which specific call this is in response to, if several
+          calls where made to the same function.</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2515877"></a>2.7. <code class="literal">VEC_EXCEPTION</code></h3></div></div></div><p>This may not be considered a real event - it is triggered when
+        the Virtual Machine generates an exception.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2508996"></a>2.8. <code class="literal">VEC_EXTERNAL</code></h3></div></div></div><p>This event is triggered when special hardware wants to signal
+        that something has happened. It is intended to be used for when a
+        photo is taken, an SMS arrives, the phone rings etc.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2523875"></a>2.9. <code class="literal">VEC_NETSTATE</code></h3></div></div></div><p>This event is triggered when the network changes state - either
+        disconnecting or connecting to a server. If this event is overridden,
+        and R[1] = <code class="literal">NS_CONNECTING</code>, the code should call
+        <code class="literal">CALL_RESET</code> with an argument of
+        <code class="literal">0xFFFF</code> to emulate the normal behaviour of the
+        client.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2524683"></a>3. List of Opcodes</h2></div></div></div><p>This table shows the basic opcodes. In the pseudo code,
+      <code class="literal">n3</code>, <code class="literal">n2</code>, <code class="literal">n1</code> and
+      n0 are the 4 bytes of the opcode (with <code class="literal">n3</code> being most
+      significant) and <code class="literal">b1</code> and <code class="literal">b0</code> are the
+      high and low 16bit word. <code class="literal">R[x]</code> is the contents of
+      register x, <code class="literal">MEM[x]</code> is the word at data memory address
+      x and <code class="literal">VEC[x]</code> is the x:th call vector. Also note: PC
+      is the value of the program counter after the instruction has been
+      decoded.</p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2527588"></a>3.1. Zeropage opcodes</h3></div></div></div><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Opcode</th><th align="center">Description</th><th align="center">Pseudo code</th></tr></thead><tbody><tr><td><code class="literal">OP_LOADZ</code></td><td><span class="bold"><strong>LOAD</strong></span>
+                [<span class="emphasis"><em>adr</em></span>], R<span class="emphasis"><em>d</em></span></td><td><p>Load direct from memory in bank zero
+                (zeropage)</p></td><td><pre class="programlisting">R[n2] := MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_STOREZ</code></td><td><span class="bold"><strong>STORE</strong></span>
+                [<span class="emphasis"><em>adr</em></span>], R<span class="emphasis"><em>s</em></span></td><td><p>Store direct to memory in bank zero
+                (zeropage)</p></td><td><pre class="programlisting">MEM[b0] := R[n2]</pre></td></tr><tr><td><code class="literal">OP_ADDZ</code></td><td><span class="bold"><strong>ADD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>Add zeropage to register</p></td><td><pre class="programlisting">R[n2] += MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_ANDZ</code></td><td><span class="bold"><strong>AND</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>And zeropage to register</p></td><td><pre class="programlisting">R[n2] &amp;= MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_ORZ</code></td><td><span class="bold"><strong>OR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>Or zeropage to register</p></td><td><pre class="programlisting">R[n2] |= MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_XORZ</code></td><td><span class="bold"><strong>XOR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>Exclusive Or zeropage to register</p></td><td><pre class="programlisting">R[n2] ^= MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_MULZ</code></td><td><span class="bold"><strong>MUL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>Multiply register by zeropage</p></td><td><pre class="programlisting">R[n2] *= MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_DIVZ</code></td><td><span class="bold"><strong>DIV</strong></span>
+                R<span class="emphasis"><em>d</em></span>, [<span class="emphasis"><em>adr</em></span>]</td><td><p>Divide register by zeropage</p></td><td><pre class="programlisting">R[n2] /= MEM[b0]</pre></td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2475813"></a>3.2. Miscellaneous Opcodes</h3></div></div></div><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Opcode</th><th align="center">Description</th><th align="center">Pseudo code</th></tr></thead><tbody><tr><td><code class="literal">OP_BRAR</code></td><td><span class="bold"><strong>BRA</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]</td><td>Branch via register</td><td><pre class="programlisting">PC := R[n0]</pre></td></tr><tr><td><code class="literal">OP_BSRR</code></td><td><span class="bold"><strong>BSR</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]</td><td>Branch to subroutine via register</td><td><pre class="programlisting">*SP++ := PC
+PC := R[n0]</pre></td></tr><tr><td><code class="literal">OP_RET</code></td><td><span class="bold"><strong>RET</strong></span></td><td>Return from CALL or BSR</td><td><pre class="programlisting">if(SP == STACK)
+  return()
+else
+  PC = *(--SP)</pre></td></tr><tr><td><code class="literal">OP_BRAF</code></td><td><span class="bold"><strong>BRA</strong></span>
+                <span class="emphasis"><em>adr</em></span></td><td>Non conditional branch forward</td><td><pre class="programlisting">PC += b0</pre></td></tr><tr><td><code class="literal">OP_BRAB</code></td><td><span class="bold"><strong>BRA</strong></span>
+                <span class="emphasis"><em>adr</em></span></td><td>Non conditional branch backward</td><td><pre class="programlisting">PC -= b0</pre></td></tr><tr><td><code class="literal">OP_BSRF</code></td><td><span class="bold"><strong>BSR</strong></span>
+                <span class="emphasis"><em>adr</em></span></td><td>Branch to subroutine forward</td><td><pre class="programlisting">*SP++ := PC
+PC += b0</pre></td></tr><tr><td><code class="literal">OP_BSRB</code></td><td><span class="bold"><strong>BSR</strong></span>
+                <span class="emphasis"><em>adr</em></span></td><td>Branch to subroutine backward</td><td><pre class="programlisting">*SP++ := PC
+PC -= b0</pre></td></tr><tr><td><code class="literal">OP_BRAZ</code></td><td><span class="bold"><strong>BRA</strong></span>
+                <span class="emphasis"><em>adr</em></span></td><td>Branch absolute from zeropage</td><td><pre class="programlisting">PC := MEM[b0]</pre></td></tr><tr><td><code class="literal">OP_CALL</code></td><td><span class="bold"><strong>CALL</strong></span> c</td><td>Software Interrupt (Native call)</td><td><pre class="programlisting">*SP++ := PC
+call(VEC[b0])
+PC := *(--SP)</pre></td></tr><tr><td><code class="literal">OP_PUSH</code></td><td><span class="bold"><strong>PUSH</strong></span>
+                R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span><span class="emphasis"><em></em></span></td><td>Push registers to the stack</td><td><pre class="programlisting">for(i=n1 to n0) SP[i] := R[i]
+SP += (n1-n0+1)</pre></td></tr><tr><td><code class="literal">OP_POP</code></td><td><span class="bold"><strong>POP</strong></span>
+                R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span><span class="emphasis"><em></em></span></td><td>Pop registers from the stack</td><td><pre class="programlisting">SP =- (n1-n0+1)
+for(i=n1 to n0) R[i] := SP[i]</pre></td></tr><tr><td><code class="literal">OP_TRUNC</code></td><td><span class="bold"><strong>TRUNC</strong></span>
+                R<span class="emphasis"><em>s</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Truncate a value between a low and a high
+                value.</td><td><pre class="programlisting">if(R[n2] &lt; PC[n1])
+  R[n2] := PC[n1]
+else
+  if(R[n2] &gt; PC[n0])
+    R[n2] := PC[n0]</pre></td></tr><tr><td><code class="literal">OP_DBGTF</code></td><td><span class="bold"><strong>DBGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Decrement and branch if greater than zero.</td><td><pre class="programlisting">R[n2] -= PC[n1]
+if(R[n2] &gt; 0)
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_DBGTB</code></td><td><span class="bold"><strong>DBGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Decrement and branch if greater than zero.</td><td><pre class="programlisting">R[n2] -= PC[n1]
+if(R[n2] &gt; 0)
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_BLEDF</code></td><td><span class="bold"><strong>BLED</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if lower or equal to zero, otherwise
+                decrement.</td><td><pre class="programlisting">if(R[n2] &lt;= 0)
+  PC += n0
+else
+  R[n2] -= PC[n1]</pre></td></tr><tr><td><code class="literal">OP_BLEDB</code></td><td><span class="bold"><strong>BLED</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if lower or equal to zero, otherwise
+                decrement.</td><td><pre class="programlisting">if(R[n2] &lt;= 0)
+  PC -= n0
+else
+  R[n2] -= PC[n1]</pre></td></tr><tr><td><code class="literal">OP_SWAP</code></td><td><span class="bold"><strong>SWAP</strong></span>
+                R<span class="emphasis"><em>d</em></span>,
+                R<span class="emphasis"><em>d</em></span><span class="emphasis"><em></em></span></td><td>Swap the contents of two registers</td><td><pre class="programlisting">TMP := R[n1]
+R[n1] := R[n0]
+R[n0] := TMP</pre></td></tr><tr><td><code class="literal">OP_MIN</code></td><td><span class="bold"><strong>MIN</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Get the lowest of two registers</td><td><pre class="programlisting">if(R[n1] &lt; R[n0])
+  R[n2] := R[n1]
+else
+  R[n2] := R[n0]</pre></td></tr><tr><td><code class="literal">OP_MAX</code></td><td><span class="bold"><strong>MAX</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Get the highest of two registers</td><td><pre class="programlisting">if(R[n1] &gt; R[n0])
+  R[n2] := R[n1]
+else
+  R[n2] := R[n0]</pre></td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2491262"></a>3.3. Memory Opcodes</h3></div></div></div><p></p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Opcode</th><th align="center">Description</th><th align="center">Pseudo code</th></tr></thead><tbody><tr><td><code class="literal">OP_LOAD</code></td><td><span class="bold"><strong>LOAD</strong></span>
+                [R<span class="emphasis"><em>s</em></span>], R<span class="emphasis"><em>d</em></span>,
+                R<span class="emphasis"><em>d</em></span></td><td>Load multiple words indirect from memory</td><td><pre class="programlisting">for(i=n1 to n0)
+  R[i] := MEM[i-n1+R[n2]]</pre></td></tr><tr><td><code class="literal">OP_STORE</code></td><td><span class="bold"><strong>STORE</strong></span>
+                [R<span class="emphasis"><em>s</em></span>], R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Store multiple words indirect to memory</td><td><pre class="programlisting">for(i=n1 to n0)
+  MEM[i-n1+R[n2]] := R[i]</pre></td></tr><tr><td><code class="literal">OP_LOADP</code></td><td><span class="bold"><strong>LOAD</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]+, R<span class="emphasis"><em>d</em></span>,
+                R<span class="emphasis"><em>d</em></span></td><td>Load multiple words indirect from memory, increase
+                after</td><td><pre class="programlisting">for(i = n1 to n0)
+  R[i] := MEM[i-n1+R[n2]]
+R[n2] += (n0-n1+1)</pre></td></tr><tr><td><code class="literal">OP_STOREP</code></td><td><span class="bold"><strong>STORE</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]+, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Store multiple words indirect to memory, increase
+                after</td><td><pre class="programlisting">for(i=n1 to n0)
+  MEM[i-n1+R[n2]] := R[i]
+R[n2] += (n0-n1+1)</pre></td></tr><tr><td><code class="literal">OP_LOAD2B</code></td><td><span class="bold"><strong>LOAD2B</strong></span>
+                [R<span class="emphasis"><em>s</em></span>], R<span class="emphasis"><em>d</em></span></td><td>Load 2 bytes as 16bit word</td><td><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 8) | 
+  (MEM[n0+1] &amp; 0xFF)</pre></td></tr><tr><td><code class="literal">OP_LOAD4B</code></td><td><span class="bold"><strong>LOAD4B</strong></span>
+                [R<span class="emphasis"><em>s</em></span>], R<span class="emphasis"><em>d</em></span></td><td>Load 4 bytes as 32bit word</td><td><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 24) |
+  (MEM[n0+1] &amp; 0xFF &lt;&lt; 16) |
+  (MEM[n0+2] &lt;&lt; 8 &amp; 0xFF) |
+  (MEM[n0+3] &amp; 0xFF)</pre></td></tr><tr><td><code class="literal">OP_LOAD2W</code></td><td><span class="bold"><strong>LOAD2W</strong></span>
+                [R<span class="emphasis"><em>s</em></span>], R<span class="emphasis"><em>d</em></span></td><td>Load 2 16bit words as 32bit word</td><td><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 16) |
+  (MEM[n0+1] &amp; 0xFFFF)</pre></td></tr><tr><td><code class="literal">OP_LOAD2BP</code></td><td><span class="bold"><strong>LOAD2B</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]+, R<span class="emphasis"><em>d</em></span></td><td>Load 2 bytes as 16bit word, increase after</td><td><p> </p><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 8) |
+  (MEM[n0+1] &amp; 0xFF)
+R[n1] += 2</pre><p> </p></td></tr><tr><td><code class="literal">OP_LOAD4BP</code></td><td><span class="bold"><strong>LOAD4B</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]+, R<span class="emphasis"><em>d</em></span></td><td>Load 4 bytes as 32bit word, increase after</td><td><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 24) |
+  (MEM[n0+1] &amp; 0xFF &lt;&lt; 16) |
+  (MEM[n0+2] &lt;&lt; 8 &amp; 0xFF) |
+  (MEM[n0+3] &amp; 0xFF)
+R[n1] += 4</pre></td></tr><tr><td><code class="literal">OP_LOAD2WP</code></td><td><span class="bold"><strong>LOAD2W</strong></span>
+                [R<span class="emphasis"><em>s</em></span>]+, R<span class="emphasis"><em>d</em></span></td><td>Load 2 16bit words as 32bit word, increase
+                after</td><td><pre class="programlisting">R[n1] :=
+  (MEM[n0] &lt;&lt; 16) |
+  (MEM[n0+1] &amp; 0xFFFF)
+R[n1] += 2</pre></td></tr><tr><td><code class="literal">OP_LDOFFS</code></td><td><span class="bold"><strong>LOAD</strong></span>
+                [R<span class="emphasis"><em>s</em></span>, <span class="emphasis"><em>c</em></span>],
+                R<span class="emphasis"><em>d</em></span></td><td>Load word from register with signed constant
+                offset</td><td><pre class="programlisting">if(n1 &gt; 0x7F)
+  R[n0] := MEM[R[n2] - 0x100 + n1]
+else
+  R[n0] := MEM[R[n2] + n1]</pre></td></tr><tr><td><code class="literal">OP_STOFFS</code></td><td><span class="bold"><strong>STORE</strong></span>
+                [R<span class="emphasis"><em>s</em></span>, <span class="emphasis"><em>c</em></span>],
+                R<span class="emphasis"><em>s</em></span></td><td>Store word from register with signed constant
+                offset</td><td><pre class="programlisting">if(n1 &gt; 0x7F)
+  MEM[R[n2] - 0x100 + n1] := R[n0]
+else
+  MEM[R[n2] + n1] := R[n0]</pre></td></tr><tr><td><code class="literal">OP_LDOFFSR</code></td><td><span class="bold"><strong>LOAD</strong></span>
+                [R<span class="emphasis"><em>s</em></span>, R<span class="emphasis"><em>s</em></span>],
+                R<span class="emphasis"><em>d</em></span></td><td>Load word from register with offset register</td><td><pre class="programlisting">R[n0] := MEM[R[n2] + R[n1]]</pre></td></tr><tr><td><code class="literal">OP_STOFFSR</code></td><td><span class="bold"><strong>STORE</strong></span>
+                [R<span class="emphasis"><em>s</em></span>, R<span class="emphasis"><em>s</em></span>],
+                R<span class="emphasis"><em>s</em></span></td><td>Store word from register with offset register</td><td><pre class="programlisting">MEM[R[n2] + R[n1]] := R[n0]</pre></td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2532510"></a>3.4. Arithmetic Opcodes</h3></div></div></div><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Opcode</th><th align="center">Description</th><th align="center">Pseudo code</th></tr></thead><tbody><tr><td><code class="literal">OP_MOVE3C</code></td><td><span class="bold"><strong>MOVE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>d</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Write constants to a register sequence</td><td><pre class="programlisting">for(i=n2 to n1)
+  R[i] := PC[n0-n2+i]</pre></td></tr><tr><td><code class="literal">OP_ADD3C</code></td><td><span class="bold"><strong>ADD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Add register and constant to another register</td><td><pre class="programlisting">R[n2] := R[n1] + PC[n0]</pre></td></tr><tr><td><code class="literal">OP_AND3C</code></td><td><span class="bold"><strong>AND</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>And register with constant to another register</td><td><pre class="programlisting">R[n2] := R[n1] &amp; PC[n0]</pre></td></tr><tr><td><code class="literal">OP_OR3C</code></td><td><span class="bold"><strong>OR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Or register with constant to another register</td><td><pre class="programlisting">R[n2] := R[n1] | PC[n0]</pre></td></tr><tr><td><code class="literal">OP_XOR3C</code></td><td><span class="bold"><strong>XOR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Exclusive Or register with constant to another
+                register</td><td><pre class="programlisting">R[n2] := R[n1] ^ PC[n0]</pre></td></tr><tr><td><code class="literal">OP_MUL3C</code></td><td><span class="bold"><strong>MUL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Multiply register by constant to another
+                register</td><td><pre class="programlisting">R[n2] := R[n1] * PC[n0]</pre></td></tr><tr><td><code class="literal">OP_DIV3C</code></td><td><span class="bold"><strong>DIV</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Divide register by constant to another register</td><td><pre class="programlisting">R[n2] := R[n1] / PC[n0]</pre></td></tr><tr><td><code class="literal">OP_RSUB2C</code></td><td><span class="bold"><strong>SUB</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c,
+                </em></span>R<span class="emphasis"><em>s</em></span></td><td>Subtract register from constant to another
+                register</td><td><pre class="programlisting">R[n2] := PC[n0] - R[n1]</pre></td></tr><tr><td><code class="literal">OP_MOD3C</code></td><td><span class="bold"><strong>MOD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Modulo (Division reminder) register by
+                constant.</td><td><pre class="programlisting">R[n2] := R[n1] % PC[n0]</pre></td></tr><tr><td><code class="literal">OP_ADD3</code></td><td><span class="bold"><strong>ADD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Add two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] + R[n0]</pre></td></tr><tr><td><code class="literal">OP_AND3</code></td><td><span class="bold"><strong>AND</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>And two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] |&amp;R[n0]</pre></td></tr><tr><td><code class="literal">OP_OR3</code></td><td><span class="bold"><strong>OR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Or two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] | R[n0]</pre></td></tr><tr><td><code class="literal">OP_MUL3</code></td><td><span class="bold"><strong>MUL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Multiply two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] * R[n0]</pre></td></tr><tr><td><code class="literal">OP_DIV3</code></td><td><span class="bold"><strong>DIV</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Divide two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] / R[n0]</pre></td></tr><tr><td><code class="literal">OP_SUB3</code></td><td><span class="bold"><strong>SUB</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Subtract two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] - R[n0]</pre></td></tr><tr><td><code class="literal">OP_MOD3</code></td><td><span class="bold"><strong>MOD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Modulo two registers to a third register</td><td><pre class="programlisting">R[n2] := R[n1] % R[n0]</pre></td></tr><tr><td><code class="literal">OP_LSHIFT3</code></td><td><span class="bold"><strong>ASL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Shift a register by another register to a third
+                register</td><td><pre class="programlisting">R[n2] := R[n1] &lt;&lt; R[n0]</pre></td></tr><tr><td><code class="literal">OP_RSHIFT3</code></td><td><span class="bold"><strong>ASR</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Shift a register by another register to a third
+                register</td><td><pre class="programlisting">R[n2] := R[n1] &gt;&gt; R[n0]</pre></td></tr><tr><td><code class="literal">OP_FIXMUL</code></td><td><span class="bold"><strong>FMUL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Fixed point multiply; Multiply and right shift by
+                constant</td><td><pre class="programlisting">R[n2] := (R[n2]*PC[n1])&gt;&gt;n0</pre></td></tr><tr><td><code class="literal">OP_FIXMULR</code></td><td><span class="bold"><strong>FMUL</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Fixed point multiply; Multiply and right shift by
+                register</td><td><pre class="programlisting">R[n2] := (R[n2]*R[n1])&gt;&gt;n0</pre></td></tr><tr><td><code class="literal">OP_RDIV3C</code></td><td><span class="bold"><strong>DIV</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c,
+                </em></span>R<span class="emphasis"><em>s</em></span></td><td>Divide a constant by a register</td><td><pre class="programlisting">R[n2] := PC[n0] / R[n1]</pre></td></tr><tr><td><code class="literal">OP_RMOD3C</code></td><td><span class="bold"><strong>MOD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c,
+                </em></span>R<span class="emphasis"><em>s</em></span></td><td>Modulo a constant by a register</td><td><pre class="programlisting">R[n2] := PC[n0] % R[n1]</pre></td></tr><tr><td><code class="literal">OP_MADD3</code></td><td><span class="bold"><strong>MADD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                R<span class="emphasis"><em>s</em></span></td><td>Multiply and Add; Add the product of two registers to a
+                third register</td><td><pre class="programlisting">R[n2] += (R[n1] * R[n0])</pre></td></tr><tr><td><code class="literal">OP_MADD3C</code></td><td><span class="bold"><strong>MADD</strong></span>
+                R<span class="emphasis"><em>d</em></span>, R<span class="emphasis"><em>s</em></span>,
+                <span class="emphasis"><em>c</em></span></td><td>Multiply and Add; Add the product of a register and a
+                constant to a third register</td><td><pre class="programlisting">R[n2] += (R[n1] * PC[n0])</pre></td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2533435"></a>3.5. Conditional Branch Opcodes</h3></div></div></div><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th align="center">Name</th><th align="center">Opcode</th><th align="center">Description</th><th align="center">Pseudo code</th></tr></thead><tbody><tr><td><code class="literal">OP_JEQF</code></td><td><span class="bold"><strong>BEQ</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is equal to constant.</td><td><pre class="programlisting">if(R[n2] == PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JEQB</code></td><td><span class="bold"><strong>BEQ</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is equal to constant.</td><td><pre class="programlisting">if(R[n2] == PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JNEF</code></td><td><span class="bold"><strong>BNE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is not equal to constant.</td><td><pre class="programlisting">if(R[n2] != PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JNEB</code></td><td><span class="bold"><strong>BNE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is not equal to constant.</td><td><pre class="programlisting">if(R[n2] != PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JLTF</code></td><td><span class="bold"><strong>BLT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than constant.</td><td><pre class="programlisting">if(R[n2] &lt; PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JLTB</code></td><td><span class="bold"><strong>BLT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than constant.</td><td><pre class="programlisting">if(R[n2] &lt; PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JGEF</code></td><td><span class="bold"><strong>BGE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than or equal to
+                constant.</td><td><pre class="programlisting">if(R[n2] &gt;= PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JGEB</code></td><td><span class="bold"><strong>BGE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than or equal to
+                constant.</td><td><pre class="programlisting">if(R[n2] &gt;= PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JLEF</code></td><td><span class="bold"><strong>BLE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than or equal to
+                constant.</td><td><pre class="programlisting">if(R[n2] &lt;= PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JLEB</code></td><td><span class="bold"><strong>BLE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than or equal to
+                constant.</td><td><pre class="programlisting">if(R[n2] &lt;= PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JGTF</code></td><td><span class="bold"><strong>BGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than constant.</td><td><pre class="programlisting">if(R[n2] &gt; PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JGTB</code></td><td><span class="bold"><strong>BGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than constant.</td><td><pre class="programlisting">if(R[n2] &gt; PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JMCF</code></td><td><span class="bold"><strong>BMC</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with constant is zero.</td><td><pre class="programlisting">if(!(R[n2] &amp; PC[n1]))
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JMCB</code></td><td><span class="bold"><strong>BMC</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with constant is zero.</td><td><pre class="programlisting">if(!(R[n2] &amp; PC[n1]))
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JMSF</code></td><td><span class="bold"><strong>BMS</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with constant is not
+                zero.</td><td><pre class="programlisting">if(R[n2] &amp; PC[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JMSB</code></td><td><span class="bold"><strong>BMS</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with constant is not
+                zero.</td><td><pre class="programlisting">if(R[n2] &amp; PC[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JEQFR</code></td><td><span class="bold"><strong>BEQ</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is equal to register.</td><td><pre class="programlisting">if(R[n2] == R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JEQBR</code></td><td><span class="bold"><strong>BEQ</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is equal to register.</td><td><pre class="programlisting">if(R[n2] == R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JNEFR</code></td><td><span class="bold"><strong>BNE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is not equal to register.</td><td><pre class="programlisting">if(R[n2] != R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JNEBR</code></td><td><span class="bold"><strong>BNE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is not equal to register.</td><td><pre class="programlisting">if(R[n2] != R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JLTFR</code></td><td><span class="bold"><strong>BLT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than register.</td><td><pre class="programlisting">if(R[n2] &lt; R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JLTBR</code></td><td><span class="bold"><strong>BLT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than register.</td><td><pre class="programlisting">if(R[n2] &lt; R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JGEFR</code></td><td><span class="bold"><strong>BGE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than or equal to
+                register.</td><td><pre class="programlisting">if(R[n2] &gt;= R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JGEBR</code></td><td><span class="bold"><strong>BGE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than or equal to
+                register.</td><td><pre class="programlisting">if(R[n2] &gt;= R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JLEFR</code></td><td><span class="bold"><strong>BLE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than or equal to
+                register.</td><td><pre class="programlisting">if(R[n2] &lt;= R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JLEBR</code></td><td><span class="bold"><strong>BLE</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is less than or equal to
+                register.</td><td><pre class="programlisting">if(R[n2] &lt;= R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JGTFR</code></td><td><span class="bold"><strong>BGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than register.</td><td><pre class="programlisting">if(R[n2] &gt; R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JGTBR</code></td><td><span class="bold"><strong>BGT</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register is greater than register.</td><td><pre class="programlisting">if(R[n2] &gt; R[n1])
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JMCFR</code></td><td><span class="bold"><strong>BMC</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with register is zero.</td><td><pre class="programlisting">if(!(R[n2] &amp; R[n1]))
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JMCBR</code></td><td><span class="bold"><strong>BMC</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with register is zero.</td><td><pre class="programlisting">if(!(R[n2] &amp; R[n1]))
+  PC -= n0</pre></td></tr><tr><td><code class="literal">OP_JMSFR</code></td><td><span class="bold"><strong>BMS</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with register is not
+                zero.</td><td><pre class="programlisting">if(R[n2] &amp; R[n1])
+  PC += n0</pre></td></tr><tr><td><code class="literal">OP_JMSBR</code></td><td><span class="bold"><strong>BMS</strong></span>
+                R<span class="emphasis"><em>d</em></span>, <span class="emphasis"><em>c</em></span>,
+                <span class="emphasis"><em>adr</em></span></td><td>Branch if register anded with register is not
+                zero.</td><td><pre class="programlisting">if(R[n2] &amp; R[n1])
+  PC -= n0</pre></td></tr></tbody></table></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2534683"></a>4. List of Network Packets</h2></div></div></div><p>The Swimmer Protocol is used to send data between client and
+      server. It is based on packets of arbitrary sizes. Each packet has the
+      same 32bit header. The size field is in bytes and includes the header
+      size. The size field is big-endian but all the data following is always
+      in the same endian as the client.</p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2534697"></a>4.1. <code class="literal">CallPacket</code></h3></div></div></div><p>Send by server to make client call a function. Can contain up to
+        12 arguments, each placed in the corresponding register.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_CALL</code></td></tr><tr><td>PARAM</td><td>8bit</td><td>Unused</td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Callno</td><td>32bit</td><td>Call reference - either an offset into program memory
+                or a native function</td></tr><tr><td>Arg0...</td><td>32bit</td><td>All arguments to function, placed in
+                <code class="literal">R[0]</code>, <code class="literal">R[1]</code> etc</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2534839"></a>4.2. <code class="literal">EventPacket</code></h3></div></div></div><p>Sent by client to server from the native call
+        <code class="literal">CALL_SEND_EVENT</code> or
+        <code class="literal">CALL_SEND_USER_EVENT</code>. Can also be sent from the
+        server to trigger an event on the client.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_EVENT</code></td></tr><tr><td>PARAM</td><td>8bit</td><td>The event number</td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Arg0...</td><td>32bit</td><td>All arguments to event. Not present if SIZE = 4</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2534967"></a>4.3. <code class="literal">DataPacket</code></h3></div></div></div><p>Send by server to place data into client memory, or by client
+        when a memory area marked in the sendback list has changed.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_DATA</code></td></tr><tr><td>PARAM</td><td>8bit</td><td>The target memory type. Can be
+                <code class="literal">DATA_MEM</code>, <code class="literal">PROGRAM_MEM</code>,
+                <code class="literal">VECTOR_MEM</code>, <code class="literal">IO_MEM</code>,
+                <code class="literal">RESOURCE_MEM</code> or
+                <code class="literal">REGISTER_MEM</code>.</td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Offset</td><td>32bit</td><td>Offset into client memory (in words) where data should
+                be copied</td></tr><tr><td>Word0...</td><td>32bit</td><td>Data words...</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2535129"></a>4.4. <code class="literal">SendBackPacket</code></h3></div></div></div><p>Send by server to set up <span class="emphasis"><em>send back</em></span> of
+        certain memory areas. Areas marked for send back will trigger a
+        DataPacket being sent to the server when they are changed.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_SENDBACK</code></td></tr><tr><td>PARAM</td><td>8bit</td><td><code class="literal">MATTR_SENDBACK_ADD</code> or
+                <code class="literal">MATTR_SENDBACK_REMOVE</code></td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Offset</td><td>32bit</td><td>Offset into client memory (in 32bit words) to affected
+                memory area</td></tr><tr><td>Length</td><td>32bit</td><td>The size of the memory area</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2535271"></a>4.5. <code class="literal">FeaturePacket</code></h3></div></div></div><p>Send by client directly after connecting, to inform server of
+        its capabilities.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_FEATURES</code></td></tr><tr><td>PARAM</td><td>8bit</td><td>Unused</td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Magic</td><td>32bit</td><td>The constant 0x12345678 - used to detect
+                endianness</td></tr><tr><td>Version</td><td>32bit</td><td><p>Client version. Currently
+                <code class="literal">0x00000001</code></p></td></tr><tr><td>Data0...</td><td>8bit</td><td><p>List of features (explained below)</p></td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2535421"></a>4.6. <code class="literal">CryptPacket</code></h3></div></div></div><p>All packets are wrapped in this packet during an encryption
+        session.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_CRYPT</code></td></tr><tr><td>PARAM</td><td>8bit</td><td>Unused</td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Encrypted Data...</td><td> </td><td>Encrypted packet</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2535536"></a>4.7. <code class="literal">DebugPacket</code></h3></div></div></div><p>Sent to initiate and acknowledge debugging, and for all debug
+        commands after that.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">Field</th><th align="center">Size</th><th align="center">Description</th></tr></thead><tbody><tr><td>CMD</td><td>8bit</td><td>The constant <code class="literal">CMD_DEBUG</code></td></tr><tr><td>PARAM</td><td>8bit</td><td><p>Unused</p></td></tr><tr><td>SIZE</td><td>16bit</td><td>Total packet size in bytes</td></tr><tr><td>Id</td><td>32bit</td><td>Identifies the debugging client</td></tr></tbody></table></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2535654"></a>5. List of Client Features</h2></div></div></div><p>Features without arguments</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col></colgroup><thead><tr><th align="center">Feature</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">FV_HAS_PC_KEYBOARD</code></td><td>The client has a PC-like keyboard.</td></tr><tr><td><code class="literal">FV_HAS_TOUCHSCREEN</code></td><td>The client has a touch screen.</td></tr><tr><td><code class="literal">FV_HAS_MOUSE</code></td><td>The client has a mouse.</td></tr><tr><td><code class="literal">FV_HAS_VIRTUAL_KEYBOARD</code></td><td>A physical keyboard is not present, but the client can
+              generate text by other mean (Using a phonepad or a touch screen
+              for instance).</td></tr><tr><td><code class="literal">FV_HAS_PHONEPAD</code></td><td>The client has a numeric keypad laid out like a
+              phone.</td></tr><tr><td><code class="literal">FV_HAS_NUMPAD</code></td><td>The client has a numeric keypad like the one on a PC
+              keyboard (mutually exclusive with
+              <code class="literal">FV_HAS_PHONEPAD</code>).</td></tr><tr><td><code class="literal">FV_HAS_SIMPLE_JOYSTICK</code></td><td>The client has some sort of directional device and an
+              action button. A simple joystick does not need to generate
+              events.</td></tr><tr><td><code class="literal">FV_HAS_GAMEPAD</code></td><td>The client has a real joystick device, that can generate
+              events.</td></tr><tr><td><code class="literal">FV_HAS_SCREEN</code></td><td>The client has a screen.</td></tr><tr><td><code class="literal">FV_HAS_EU</code></td><td>The client has an execution unit (can run Swimmer
+              Code).</td></tr><tr><td><code class="literal">FV_HAS_ENCRYPTION</code></td><td>The client supports encryption.</td></tr><tr><td><code class="literal">FV_HAS_SOUND</code></td><td>The client has sound.</td></tr><tr><td><code class="literal">FV_HAS_DEBUG_OUTPUT</code></td><td>The client can display
+              <code class="literal">CALL_DEBUG_OUTPUT</code> messages.</td></tr><tr><td><code class="literal">FV_HAS_GZIP</code></td><td>The client can load <code class="literal">RTYPE_GZIP</code>
+              resources.</td></tr></tbody></table></div><p>Features with one 8bit argument.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col></colgroup><thead><tr><th align="center">Feature</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">FV_SCREEN_BPP</code></td><td>The Bits Per Pixel of the screen (Normally 16 or
+              32).</td></tr><tr><td><code class="literal">FV_MOUSE_BUTTONS</code></td><td>Number of mouse buttons (should only be present together
+              with <code class="literal">FV_HAS_MOUSE</code>).</td></tr><tr><td><code class="literal">FV_KEYBOARD_KEYS</code></td><td>Number of keyboard keys (should only be present together
+              with <code class="literal">FV_HAS_PC_KEYBOARD</code> or
+              <code class="literal">FV_HAS_VIRTUAL_KEYBOARD</code>).</td></tr><tr><td><code class="literal">FV_ALPHA_BLEND</code></td><td>Tells how the client handles alpha blending; 0 For none,
+              1 = 1bit alpha, 2 = real alpha but 1bit will be faster, 3 = real
+              alpha only.</td></tr></tbody></table></div><p>Features with one 16bit argument.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col></colgroup><thead><tr><th align="center">Feature</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">FV_SCREEN_HEIGHT</code></td><td>Height of the screen in pixels.</td></tr><tr><td><code class="literal">FV_SCREEN_WIDTH</code></td><td>Width of the screen in pixels.</td></tr><tr><td><code class="literal">FV_MAX_PACKET_SIZE</code></td><td>Max packet size the client can handle.</td></tr><tr><td><code class="literal">FV_IMAGE_SLOTS</code></td><td>Number of images that can be created.</td></tr><tr><td><code class="literal">FV_SOUND_SLOTS</code></td><td>Number of sounds that can be created.</td></tr><tr><td><code class="literal">FV_MAX_IMAGE_WIDTH</code></td><td>The maximum width and height (in pixels) of a images on
+              the client.</td></tr></tbody></table></div><p>Features with one 32bit argument.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col></colgroup><thead><tr><th align="center">Feature</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">FV_DATA_SIZE</code></td><td>Approx size of Data memory in KBytes. Client guarantees
+              that at least this much memory can be mapped using
+              <code class="literal">CALL_MAP_MEM</code>. 0 means unspecified.</td></tr><tr><td><code class="literal">FV_PROGRAM_SIZE</code></td><td>Size of Program memory, in number of
+              instructions.</td></tr><tr><td><code class="literal">FV_RESOURCE_SIZE</code></td><td>Total size of resources that can be stored in persitant
+              memory, in KBytes. 0 means unspecified.</td></tr><tr><td><code class="literal">FV_MEMORY_SIZE</code></td><td>Total size of runtime memory available to the swimmer
+              client, in KBytes - this includes data memory and all loaded
+              images and sounds.</td></tr><tr><td><code class="literal">FV_STACK_SIZE</code></td><td>Maximum size of Execution Unit stack.</td></tr></tbody></table></div><p>Features with a list of (8bit) arguments. First byte after the
+      feature value is number of bytes that follows.</p><div class="informaltable"><table width="100%" border="1"><colgroup><col><col></colgroup><thead><tr><th align="center">Feature</th><th align="center">Description</th></tr></thead><tbody><tr><td><code class="literal">FV_SOUND_FORMATS</code></td><td>A list of sound formats that can be created with
+              <code class="literal">CALL_CREATE_RESOURCE</code></td></tr><tr><td><code class="literal">FV_IMAGE_FORMATS</code></td><td>A list of image formats that can be created with
+              <code class="literal">CALL_CREATE_RESOURCE</code></td></tr><tr><td><code class="literal">FV_CUSTOM</code></td><td>Any feature value that is &gt;= FV_CUSTOM can be used for
+              client specific / application specific features.</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2536356"></a>6. List of Native Functions</h2></div></div></div><p>All functions takes arguments in R[0] and forward, but never more
+      than 6 arguments.</p><p>Some functions <span class="emphasis"><em>returns</em></span> a value i r0.</p><p>Some functions can cause <span class="emphasis"><em>exceptions</em></span>.</p><p>Some functions generate a <code class="literal">VEC_RESULT</code>.</p><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536387"></a>6.1. <code class="literal">CALL_NOOP</code></h3></div></div></div><p>Does nothing. This is initially the target call of
+        <code class="literal">VEC_VBLANK</code>.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536406"></a>6.2. <code class="literal">CALL_SEND_EVENT</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Event
+          number</td></tr><tr><td><span class="bold"><strong>r1-r3</strong></span> = Arguments</td></tr></table><p>Sends an event to the server. The event number will be stored in
+        the <code class="literal">PARAM</code> field in the Packet, and
+        <em class="parameter"><code>R[0]</code></em> will be replaced by the current value of
+        <code class="literal">IO_TIMER</code>. This call is the target of most event
+        vectors at client startup, so that key presses and mouse clicks are
+        sent to the server if not handled by swimmer code.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536461"></a>6.3. <code class="literal">CALL_SEND_USER_EVENT</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Event
+          number</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Number of
+          arguments</td></tr><tr><td><span class="bold"><strong>r2</strong></span>-<span class="bold"><strong>r</strong></span><span class="emphasis"><em>n</em></span> = Arguments</td></tr></table><p>Sends an custom event to the server. The event number will be
+        stored in the <code class="literal">PARAM</code> field in the Packet, and R[1]
+        values, starting from the register r2, will be the arguments to the
+        event. Note that R[1] can be zero.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536518"></a>6.4. <code class="literal">CALL_SEND_DATA</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Source
+          address</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Length (in
+          words)</td></tr></table><p>Sends data to the server.</p><p>Throws: EXCP_MEM_READ if address is illegal.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536555"></a>6.5. <code class="literal">CALL_MEMCPY</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Target
+          address</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Source
+          address</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Size (in
+          words)</td></tr></table><p>Standard memcopy in clients (virtual) memory.</p><p>Throws: EXCP_MEM_READ or EXCP_MEM_WRITE if addresses are
+        illegal.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536601"></a>6.6. <code class="literal">CALL_MEMSET</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Target
+          address</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Value</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Size (in
+          words)</td></tr></table><p>Standard memset in clients (virtual) memory.</p><p>Throws: EXCP_MEM_WRITE if address is illegal.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536647"></a>6.7. <code class="literal">CALL_QSORT</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of list to
+          be sorted</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Number of
+          elements</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Size of one element
+          (in words)</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Offset to key
+          element (in words)</td></tr></table><p>Sort a memory area using a certain value as an (integer) key.
+        The offset is calculated from the start of the element.</p><p>Throws: EXCP_MEM_READ if address is illegal, EXCP_NATIVE_CALL if
+        Offset is outside element.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536704"></a>6.8. <code class="literal">CALL_ENTER_LINEMODE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Target and source
+          address for entered text</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Maximum length of
+          text</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Offset to text to be
+          used as heading, or 0 for default heading</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = The type of text
+          that should be entered</td></tr></table><p>Ask client host for a line of text, in whichever way text input
+        is handled on the device. May temporarily switch out the main screen
+        of the client. Will generate a <code class="literal">VEC_TEXTLINE</code> event
+        when input is finished.</p><p>Type should be one of <code class="literal">INP_TEXT</code>,
+        <code class="literal">INP_NUMBER</code>, <code class="literal">INP_LETTERS</code>,
+        <code class="literal">INP_WORDS</code>, <code class="literal">INP_PASSWORD</code>,
+        <code class="literal">INP_PHONE_NUMBER</code>,
+        <code class="literal">INP_EMAIL</code></p><p><code class="literal">Throws:EXCP_MEM_READ if addresses are illegal,
+        EXCP_MEM_WRITE if result overwrites illegal address, EXCP_NATIVE_CALL
+        if Type is unknown.</code></p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536812"></a>6.9. <code class="literal">CALL_CREATE_RESOURCE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of 128bit
+          Hash uniquely identifying resource, or 0</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address to textual
+          name of resource, or 0</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Address of resource
+          data to create from, or 0</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Size of resource
+          data in bytes</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Type of
+          resource</td></tr></table><p>Creates a named resource in persistent storage. The client
+        should store the resource together with the current
+        <span class="emphasis"><em>Application ID</em></span> so that different applications can
+        use the same resource name without collisions.</p><p>The resource is identified by a hash and/or a name. One or both
+        of these must be specified. The hash is normally an MD5 of the
+        resource contents. The name is normally a descriptive name so that the
+        resource can be referred to without knowing the contents.</p><p>Pointer to resource data may be zero, in which case the resource
+        is created empty, and is expected to be filled by subsequent data
+        packets to resource memory.</p><p>The type identifies the type of resource created, for instance
+        <code class="literal">RTYPE_PNG</code> or <code class="literal">RTYPE_WAV</code>.</p><p>Throws:EXCP_MEM_READ if addresses are illegal.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536912"></a>6.10. <code class="literal">CALL_LOAD_RESOURCE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of 128bit
+          Hash uniquely identifying resource</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address to textual
+          name of resource</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Target
+          address</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = File offset (in
+          bytes)</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Number of bytes to
+          read (0 means to end of file)</td></tr></table><p>Load a resource into memory. One or both of ID and name must be
+        specified. Resources should preferably only be loaded into 8bit
+        memory, since otherwise the endianness of the host comes into
+        play.</p><p>The resource is matched against name first, then hash. If only
+        hash is specified then client may look for resources saved by other
+        applications.</p><p>Result: R[2] = RC_SUCCESS or RC_ERR_RES_NOT_FOUND, R[3] = Target
+        address</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2536985"></a>6.11. <code class="literal">CALL_CLEAR_AREA</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = X-position</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Y-position</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Width</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Height</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Color (in RGB
+          format)</td></tr></table><p>Clear a portion of the screen (or current render target) to the
+        specified color. The X and Y position is divided by
+        <code class="literal">IO_XDIVIDER</code> and <code class="literal">IO_YDIVIDER</code>
+        respectively. Does not use alpha blending.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537054"></a>6.12. <code class="literal">CALL_CREATE_IMAGE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Image number to
+          (re)define</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Memory address of
+          pixels (Width * Height pixels)</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Memory address of
+          Palette (256 * 4 bytes)</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Width</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Height</td></tr><tr><td><span class="bold"><strong>R[5]</strong></span> = Flags</td></tr></table><p>Create an image (that can later be used as a blitting source). A
+        tiling with a single tile that covers the whole image is automatically
+        defined.</p><p>A client has a limited number of image slots, which should be
+        reported to the server through the client features packet.</p><p>If palette is specified, the pixel data is assumed to be 8bit,
+        otherwise 32bit.</p><p>Valid flags are;</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">IMG_RENDERTARGET</code> to create an image that
+          can be used as a render target. This may imply that any alpha
+          channel is ignored.</td></tr><tr><td><code class="literal">IMG_ALPHA</code> to indicate that an alpha
+          channel should be used.</td></tr></table><p>Throws: EXCP_MEM_READ if addresses are illegal, EXCP_NATIVE_CALL
+        if Image number is not an image slot or if image is too large.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537164"></a>6.13. <code class="literal">CALL_CREATE_IMAGE_FR</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Image number to
+          (re)define</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address of 128bit
+          Hash uniquely identifying resource</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Address to textual
+          name of resource</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Flags</td></tr></table><p>Similar to <code class="literal">CALL_CREATE_IMAGE</code> except a
+        resource in a known format (normally PNG) is used as the source. A
+        tiling with a single tile that covers the whole image is automatically
+        defined.</p><p>This type of image can not be a render target, and the alpha
+        channel is deducted from the file itself, so the
+        <code class="literal">IMG_RENDERTARGET</code> and <code class="literal">IMG_ALPHA</code>
+        flags are ignored. The only valid flag is <code class="literal">IMG_LAZY</code>,
+        which indicates that the client does not have to create the image
+        unless it is actually rendered.</p><p>The resource is matched against name first, then hash. If only
+        hash is specified then client may look for resources saved by other
+        applications.</p><p>RESULT: <code class="literal">R[2] = RC_SUCCESS</code> if resource was
+        found or <code class="literal">RC_ERR_RES_NOT_FOUND</code> if not , R[3] = Image
+        number</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537268"></a>6.14. <code class="literal">CALL_SET_RENDER_TARGET</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Image number to use
+          as target, or -1 to use the screen (the default)</td></tr></table><p>This lets swimmer use a specific image as render target instead
+        of the screen. The image must have been created with the
+        <code class="literal">IMG_RENDERTARGET</code> flag.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537302"></a>6.15. <code class="literal">CALL_DEFINE_IMAGE_TILING</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Image number to
+          define tiling for</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Width of a single
+          tile, or list of widths for a variable width tileset</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Height of a single
+          tile</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Number of tiles
+          (laid out left to right, then top to bottom)</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Flags</td></tr></table><p>Define a tiling for an image so that parts of it can be drawn to
+        the screen. A tiling can be used to define the layout of fonts,
+        sprites, background graphics etc (so <span class="emphasis"><em>tile</em></span> may not
+        be the best name). Tiles are laid out left to right then top to
+        bottom. Possible flags are;</p><p>TS_WIDTHPTR - Means R[1] points to list of widths</p><p>Throws: EXCP_MEM_READ if TS_WIDTHPTR is set and address is
+        illegal, EXCP_NATIVE_CALL if Image number is invalid or does not
+        represent an image, if Width or Height doesn't fit image.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537381"></a>6.16. <code class="literal">CALL_RENDER_IMAGE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = The source image to
+          render from</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Which tile to
+          render</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Target
+          X-position</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Target
+          Y-position</td></tr></table><p>Render a single tile from an image to the screen (or the current
+        render target). The X and Y position is divided by
+        <code class="literal">IO_XDIVIDER</code> and <code class="literal">IO_YDIVIDER</code>
+        respectively.</p><p>Returns: The width of the tile.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537447"></a>6.17. <code class="literal">CALL_SET_ENCRYPTION</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = KeyId, or -1 to use
+          the any available key</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Seed value</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Encryption
+          type</td></tr></table><p>Start or stop an encryption session with the server.</p><p>If <code class="literal">-1</code> is specified as key, any available (but
+        normally the first) key is used.</p><p>Note that the encryption is not actually turned on until after
+        the RESULT was generated, otherwise the server can not see which KeyId
+        is used for encryption, and thus not find the correct key to actually
+        decrypt the packets coming from the client.</p><p>The seed value is combined with the key to form a session
+        key.</p><p>The type decides which type of encryption should be active from
+        now on:</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">ENCR_BLOWFISH_FROM_RES</code> - Start blowfish
+            encryption using a numbered key resource as key.</td></tr><tr><td><code class="literal">ENCR_BLOWFISH_FROM_MEMORY</code> - Start
+            blowfish encryption using a key in memory.The KeyId argument is
+            the address of the key.</td></tr><tr><td><code class="literal">ENCR_RSA_FROM_RES</code> - Start RSA
+            encryption using a numbered key resource as key.</td></tr><tr><td><code class="literal">ENCR_NONE</code> - End any current encryption
+            sessions and go back to unencrypted traffic.</td></tr></table><p>When you turn off encryption using <code class="literal">ENCR_NONE</code>,
+        all other arguments are ignored.</p><p>RESULT: R[2] = <code class="literal">RC_SUCCESS</code> or
+        <code class="literal">RC_ERROR</code> if key was not found, R[3] = The KeyId if
+        found.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537584"></a>6.18. <code class="literal">CALL_LOAD_PACKAGE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of 128bit
+          Hash uniquely identifying package</td></tr></table><p>Try to load an <code class="literal">RTYPE_PACKAGE</code> resource, and
+        apply all packets contained in it as though they came from the server.
+        Note that there are no corresponding SAVE_PACKAGE, packages are
+        created as normal resources (of type
+        <code class="literal">RTYPE_PACKAGE</code>).</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537624"></a>6.19. <code class="literal">CALL_MAP_MEM</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Bank</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Minimum size (in
+          words)</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Type and minimum
+          bitsize.</td></tr></table><p>Create a new memory area with the given size and format, and map
+        it to the given bank. If the bank is already mapped to a memory area,
+        it is discarded.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537669"></a>6.20. <code class="literal">CALL_DEBUG_PRINT</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of text
+          string</td></tr></table><p>Print a line of text to the debug console if available, using a
+        printf-like format.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537696"></a>6.21. <code class="literal">CALL_ALERT</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Flags</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Message</td></tr></table><p>Alert the user through a combination of sound, vibration and
+        light. This will be different for different host hardware so the flags
+        are only a recommendation.</p><p>Flags can be a combination of these;</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">ALERT_SOUND</code> = Some sort of beep or
+          noise</td></tr><tr><td><code class="literal">ALERT_VIBRATE</code> = Vibration</td></tr><tr><td><code class="literal">ALERT_BACKLIGHT</code> = Turn on screen
+          backlight</td></tr><tr><td><code class="literal">ALERT_LED</code> = Blink Indicator
+          light</td></tr><tr><td><code class="literal">ALERT_POPUP</code> = Unminimize and unhide if
+          client is hidden.</td></tr></table><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">ALERT_DISCRETE</code> = Short, one-shot</td></tr><tr><td><code class="literal">ALERT_NORMAL</code> = Normal length (two double
+          beeps or similar)</td></tr><tr><td><code class="literal">ALERT_NOISY</code> = Long and annoying (but no
+          more than 10 sec)</td></tr><tr><td><code class="literal">ALERT_PROGRESSIVE</code> = Go from discrete to
+          noisy (but no longer than 10 sec)</td></tr></table><p>The message should only be displayed on clients that have a
+        special area for it, that is not part of the client screen. The normal
+        cases are popup bubbles for PC clients and a LED-display on special
+        devices like phones or LED signs.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537826"></a>6.22. <code class="literal">CALL_CREATE_SOUND</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Sound
+          number</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address of sound
+          data</td></tr><tr><td><span class="bold"><strong>R[3]</strong></span> = Length of sound
+          data</td></tr><tr><td><span class="bold"><strong>R[4]</strong></span> = Frequency in
+          Hz</td></tr><tr><td><span class="bold"><strong>R[5]</strong></span> = Format</td></tr></table><p>Create a sound from sample data in memory. Format can currently
+        only be;</p><p><code class="literal">SFMT_PCM16S</code> = 16bit, signed, single channel
+        PCM sample data</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537893"></a>6.23. <code class="literal">CALL_CREATE_SOUND_FR</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Sound
+          number</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address of 128bit
+          Hash uniquely identifying resource</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Address to textual
+          name of resource</td></tr></table><p>Creates a sound from a resource file.</p><p>The resource is matched against name first, then hash. If only
+        hash is specified then client may look for resources saved by other
+        applications.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537942"></a>6.24. <code class="literal">CALL_PLAY_SOUND</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Sound
+          number</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Channel, or -1 for
+          any free channel</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Position, or 0 to
+          play right away</td></tr></table><p>Play a previously created sound. The position argument is only
+        supported on some hardware.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2537985"></a>6.25. <code class="literal">CALL_REMOVE_RESOURCES</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Address of 128bit
+          Hash uniquely identifying resource</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Address to textual
+          name of resource</td></tr><tr><td><span class="bold"><strong>R[2]</strong></span> = Flags</td></tr></table><p>This will remove all resources matching either or both of Hash
+        and Name. If both criteria is zero, all resources will be removed. If
+        both criteria are specified, resources matching name will be removed,
+        <span class="emphasis"><em>except</em></span> the one that also matches hash (used to
+        delete all old resources by name, but saving the current one).</p><p>Flags can be;</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">RR_UNUSED</code> - Remove only unused resources,
+          meaning resources that has not been accessed since the last RESET of
+          the client.</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538054"></a>6.26. <code class="literal">CALL_GET_FEATURE</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Feature
+          Index</td></tr></table><p>Returns the value of a specific client feature. Used for
+        instance by an offline application to learn the width and height of
+        the screen.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538082"></a>6.27. <code class="literal">CALL_RESET</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Flags</td></tr></table><p>Perform a client reset according to the given flags.</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">RES_SEND_FEATURES</code> = Send the feature
+          packet to the server again</td></tr><tr><td><code class="literal">RES_CLEAR_SCREEN</code> = Clear the screen to
+          black</td></tr><tr><td><code class="literal">RES_DELETE_MEMORY</code> = Remove and free all
+          data memory mappings</td></tr><tr><td><code class="literal">RES_CLEAR_LOADED_RESOURCES</code> = Unload all
+          created images and sounds</td></tr><tr><td><code class="literal">RES_CLEAR_PROGRAM</code> = Clear program
+          memory</td></tr><tr><td><code class="literal">RES_CLEAR_VECTORS</code> = Clear vector
+          memory</td></tr><tr><td><code class="literal">RES_CLEAR_REGISTERS</code> = Clear all
+          registers</td></tr></table><p>These flags are guranteed to be represented by bits above bit
+        15, and so is not used when the flag argument is 0xFFFF;</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">RES_QUIT</code> = Exit the swimmer
+          client</td></tr><tr><td><code class="literal">RES_CLEAR_SRAM</code> = Clear SRAM</td></tr></table></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538197"></a>6.28. <code class="literal">CALL_GENERATE_RANDOM</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0]</strong></span> = Target
+          address.</td></tr><tr><td><span class="bold"><strong>R[1]</strong></span> = Length in words of
+          target memory.</td></tr></table><p>Generates true random values (for use with encryption).</p><p>RESULT: R[2] = RC_SUCCESS or RC_ERROR if there was not enough
+        entropy to create the required number of random values.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538238"></a>6.29. <code class="literal">CALL_SET_MULTICALL</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0..5]</strong></span> = Argument flags
+          and increment</td></tr><tr><td><span class="bold"><strong>R[6]</strong></span> = Target Call</td></tr></table><p>Sets up a multicall. TargetCall is the native call that should
+        be called in succession by <code class="literal">CALL_DO_MULTICALL</code>. The
+        other arguments contains information on how each argument to the
+        target call should be handled; the top 8 bits specify flags and the
+        bottom 24 bits is a signed integer that should be added to that
+        argument for each successive call.</p><p>Flags:</p><table class="simplelist" border="0" summary="Simple list"><tr><td><code class="literal">MC_INDIRECT</code> = This argument is a
+            pointer into data memory</td></tr><tr><td><code class="literal">MC_XDIV</code> = This argument should be
+            divided by the current <code class="literal">IO_XDIVIDER</code> before each
+            use</td></tr><tr><td><code class="literal">MC_YDIV</code> = This argument should be
+            divided by the current <code class="literal">IO_YDIVIDER</code> before each
+            use</td></tr></table><p>Note the use of <span class="emphasis"><em>current</em></span> above; the
+        dividers will be read and saved when CALL_SET_MULITICALL is called, so
+        you can change the dividers before the actual call.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538336"></a>6.30. <code class="literal">CALL_DO_MULTICALL</code></h3></div></div></div><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>R[0..5]</strong></span> = Initial
+          arguments</td></tr><tr><td><span class="bold"><strong>R[6]</strong></span> = Number of time to
+          call the TargetCall</td></tr></table><p>Call the previously set up TargetCall a number of times in
+        succession. After each call the arguments will be modified according
+        to the previous <code class="literal">CALL_SET_MULTICALL</code>.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2538379"></a>7. Debugging (obsolete)</h2></div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538385"></a>7.1. Setup</h3></div></div></div><div class="itemizedlist"><ul type="disc"><li><p>Server sends a <code class="literal">DebugPacket</code> to a client
+            (this step is optional since client can initiate debugging itself,
+            normally on startup). The <span class="emphasis"><em>id</em></span> field may be set
+            to any value at this point.</p></li><li><p>The client opens a new socket connection to the server and
+            sends <span class="emphasis"><em>two</em></span> debug packets, one to the present
+            connection and one to the new connection. The
+            <span class="emphasis"><em>id</em></span> field needs to be set to the same value -
+            either a completely random value or a client specific ID of some
+            kind.</p></li><li><p>When the server receives the <code class="literal">DebugPacket</code>
+            on the new connection it uses the <span class="emphasis"><em>id</em></span> to find
+            out which client is on the other end. This new connection is the
+            one used for all debug commands.</p></li><li><p>To start a debug session, a debugger connects to server in
+            the same way as a client, but instead of sending a
+            <code class="literal">FeaturePacket</code>, it sends a DebugPacket with
+            <span class="emphasis"><em>id</em></span> set to
+            <code class="literal"><code class="literal">0xFFFFFFFF</code>.</code></p></li><li><p>A debugger can only send server commands until it has
+            connected to a specific client using the
+            <span class="emphasis"><em>debug</em></span> command. At that point, all client
+            commands are redirected to the selected client.</p></li><li><p>The server listens to all connected debuggers, but only one
+            debugger may be connected to a specific client at the same
+            time.</p></li></ul></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538498"></a>7.2. Commands to server</h3></div></div></div><p>These commands are interpreted directly by the server and
+        requires no communication with a client. Some of the commands require
+        you to be connected to a client just because they need an active
+        client.</p><div class="cmdsynopsis"><p><code class="command">debug</code>  {<em class="replaceable"><code>id</code></em>}</p></div><p>Connect to the given client.</p><div class="cmdsynopsis"><p><code class="command">list</code> </p></div><p>List all connected clients and their IDs</p><div class="cmdsynopsis"><p><code class="command">pc</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Display file and line associated with a specific location in
+        program memory for the current client.</p><div class="cmdsynopsis"><p><code class="command">src</code>  {<em class="replaceable"><code>sourcefile</code></em>} {<em class="replaceable"><code>line</code></em>}</p></div><p>Display program memory offset associated with a specific
+        assembler file and line for the current client.</p><div class="cmdsynopsis"><p><code class="command">symbols</code> </p></div><p>Show all symbols defined for the current client.</p><div class="cmdsynopsis"><p><code class="command">labels</code> </p></div><p>Show all labels defined for the current client.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2538634"></a>7.3. Commands to client</h3></div></div></div><p>Commands that a swimmer client listens to.</p><div class="cmdsynopsis"><p><code class="command">c</code> </p></div><p>Continue execution after a break or exception</p><div class="cmdsynopsis"><p><code class="command">br</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Set a breakpoint on a program memory address</p><div class="cmdsynopsis"><p><code class="command">bd</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Deletes a breakpoint from a program memory address</p><div class="cmdsynopsis"><p><code class="command">bl</code> </p></div><p>List all breakpoints</p><div class="cmdsynopsis"><p><code class="command">bc</code> </p></div><p>Clears all breakpoints</p><div class="cmdsynopsis"><p><code class="command">wr</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Set a read watch on a data memory address</p><div class="cmdsynopsis"><p><code class="command">ww</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Set a write watch on a data memory address</p><div class="cmdsynopsis"><p><code class="command">wd</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Deletes a watch from a data memory address</p><div class="cmdsynopsis"><p><code class="command">wl</code> </p></div><p>List all watchpoints</p><div class="cmdsynopsis"><p><code class="command">wc</code> </p></div><p>Clears all watchpoints</p><div class="cmdsynopsis"><p><code class="command">x</code> </p></div><p>Show the values of all registers</p><div class="cmdsynopsis"><p><code class="command">md</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>}</p></div><p>Show contents of data memory between two addresses</p><div class="cmdsynopsis"><p><code class="command">mp</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>}</p></div><p>Show contents of program memory between two addresses</p><div class="cmdsynopsis"><p><code class="command">mv</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>}</p></div><p>Show contents of vector memory between two addresses</p><div class="cmdsynopsis"><p><code class="command">pd</code>  {<em class="replaceable"><code>address</code></em>} {<em class="replaceable"><code>value</code></em>}</p></div><p>Put a value into data memory</p><div class="cmdsynopsis"><p><code class="command">mp</code>  {<em class="replaceable"><code>address</code></em>} {<em class="replaceable"><code>value</code></em>}</p></div><p>Put a value into program memory</p><div class="cmdsynopsis"><p><code class="command">pv</code>  {<em class="replaceable"><code>address</code></em>} {<em class="replaceable"><code>value</code></em>}</p></div><p>Put a value into vector memory</p><div class="cmdsynopsis"><p><code class="command">sl</code> </p></div><p>Step to the next program memory address</p><div class="cmdsynopsis"><p><code class="command">si</code> </p></div><p>Step one instruction, following branches</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id2539056"></a>7.4. Results from client</h3></div></div></div><p>The results from clients are very similar to the commands it
+        gets sent.</p><div class="cmdsynopsis"><p><code class="command">c</code> </p></div><p>Response to 'c' command</p><div class="cmdsynopsis"><p><code class="command">br</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Indicates a breakpoint location. Response to 'br' and 'bl'
+        commands</p><div class="cmdsynopsis"><p><code class="command">bd</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Response to 'bd' command</p><div class="cmdsynopsis"><p><code class="command">bc</code> </p></div><p>Response to 'bc' command</p><div class="cmdsynopsis"><p><code class="command">wr</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Indicates a read watchpoint location. Response to 'wr' and 'wl'
+        commands.</p><div class="cmdsynopsis"><p><code class="command">ww</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Indicates a write watchpoint location. Response to 'ww' and 'wl'
+        commands.</p><div class="cmdsynopsis"><p><code class="command">wd</code>  {<em class="replaceable"><code>address</code></em>}</p></div><p>Response to 'wd' command.</p><div class="cmdsynopsis"><p><code class="command">wc</code> </p></div><p>Response to 'wc' command</p><div class="cmdsynopsis"><p><code class="command">x</code>  {<em class="replaceable"><code>register</code></em>} {<em class="replaceable"><code>value</code></em>}</p></div><p>Show the value of a register. Response to 'x', 'si' and 'sl'
+        commands.</p><div class="cmdsynopsis"><p><code class="command">md</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>} {<em class="replaceable"><code>value</code></em>...}</p></div><p>Shows contents of data memory between two addresses. Response to
+        'md' and 'pd' commands.</p><div class="cmdsynopsis"><p><code class="command">mp</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>} {<em class="replaceable"><code>value</code></em>...}</p></div><p>Shows contents of program memory between two addresses. Response
+        to 'mp' and 'pp' commands.</p><div class="cmdsynopsis"><p><code class="command">mv</code>  {<em class="replaceable"><code>adress0</code></em>} {<em class="replaceable"><code>adress1</code></em>} {<em class="replaceable"><code>value</code></em>...}</p></div><p>Shows contents of vector memory between two addresses. Response
+        to 'mv' and 'pv' commands.</p></div></div></div><div class="appendix" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="id2539375"></a>Appendix A. Assembler Examples</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id2539380">1. Drawline</a></span></dt></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2539380"></a>1. Drawline</h2></div></div></div><pre class="programlisting">    ; Arguments
+    @defreg "rX0", 0
+    @defreg "rY0", 1
+    @defreg "rX1", 2
+    @defreg "rY1", 3
+    @defreg "rCOLOR", 4
+draw_line:
+    
+    @defreg "rDX", 5
+    @defreg "rDY", 6
+    
+    sub     rDX,rX1,rX0
+    sub     rDY,rY1,rY0
+    
+    ; Return if line has zero length
+    bne     rDX,.notzero
+    bne     rDY,.notzero
+    ret
+.notzero
+    
+    bge     rDX,@+1
+    neg     rDX
+    bge     rDY,@+1
+    neg     rDY
+    
+    blt     rDY,rDX,.xline
+    
+    ; y direction is largest
+    
+    blt     rY0,rY1,.ok
+    
+    ; Swap x0,y0 with x1,y1 
+    swap    rY0,rY1
+    swap    rX0,rX1
+.ok
+    
+    sub     rDX,rX1,rX0
+    asl     rDX,8   
+    sub     rDY,rY1,rY0 
+    div     rDX,rDY             ; deltax = (x1-x0)*256/(y1-y0)      
+    asl     rX0,8               ; x0 = x0 * 256
+    
+    mul     rY0,fbWidth
+    add     rY0,frameBuffer
+    
+    @defreg "rPTR", 2
+    
+.yloop
+    asr     rPTR,rX0,8
+    add     rPTR,rY0
+    
+    store   [rPTR],rCOLOR
+    
+    add     rX0,rDX
+    add     rY0,fbWidth
+    
+    dbgt    rDY,1,.yloop
+    
+    ret
+    
+.xline
+    ; x direction is largest
+    
+    blt     rX0,rX1,.ok2
+    ; Swap x0,y0 with x1,y1 
+    swap    rY0,rY1
+    swap    rX0,rX1
+.ok2
+    
+    sub     rDY,rY1,rY0
+    asl     rDY,8
+    sub     rDX,rX1,rX0
+    div     rDY,rDX             ; deltay = (y1-y0)*256/(x1-x0)
+    asl     rY0,8               ; y0 = y0 * 256
+    
+    add     rX0,frameBuffer
+    
+    @defreg "rPTR", 2       
+.xloop
+    asr     rPTR,rY0,8
+    mul     rPTR,fbWidth
+    add     rPTR,rX0
+    
+    store   [rPTR],rCOLOR
+    
+    add     rY0,rDY
+    add     rX0,1
+    
+    dbgt    rDX,1,.xloop
+    
+    ret</pre></div></div></div></body></html>

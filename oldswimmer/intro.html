@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="Swimmer" />
+<link rel="shortcut icon" href="/favicon.ico" />
+		<title>Swimmer - Intro</title>
+	</head>
+<body  class="ns-0 ltr">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">Swimmer</h1>
+		<div id="bodyContent">
+			<!-- start content -->
+			<p><i>(Author: Jonas Minnberg)</i>
+</p><p><br />
+</p>
+<h3> Introduction </h3>
+<p>Swimmer is the name given to a set of source code, technology and ideas whose
+intended use is to simplify the development of client/server software for
+handheld devices.
+</p><p>Swimmer consists of:
+</p>
+<ul><li> The <i>Swimmer Client</i>, which is a thin, portable client program that runs on a handheld (or other) device and is capable of performing IO and running code in its virtual machine.
+</li></ul>
+<ul><li> The <i>Swimmer Protocol</i>, which defines how the server talks to the client.
+</li></ul>
+<ul><li> The <i>Swimmer Server API</i>, which is a set of classes and tools that simplifies the development of a Swimmer Server. 
+</li></ul>
+<p><br />
+</p>
+<h3> Background </h3>
+<p>The initial reason for Swimmer's conception was the state of development for
+mobile phones - I was hearing about developers having to deliver their code on 100-200
+target devices, on how the limitations on Java/MIDP required all sorts of weird
+tricks and how you needed to avoid using normal java constructs (ie classes) to gain
+the necessary speed.
+</p><p>It also grew from long time ideas I've had about making multiplayer/multiuser
+applications much easier to implement through network-shared memory.
+</p><p>I also wanted to do something with a very thin client and all complexity
+moved to the server which makes more sense than the other way around (which
+is the way traditional web browsers work).
+</p><p><br />
+</p>
+<h3> Java vs Swimmer </h3>
+<p>So why not just use Java? Why write a new virtual machine?
+</p><p><i>Well;</i>
+</p>
+<dl><dd> A Java implementation with all classes requires lots of memory on the client even though most classes are never used (not really a big issue since memory is cheap).
+</dd></dl>
+<dl><dd> The Java Virtual Machine is not very effecient, unless JIT-techniques or similar are used, which adds even more complexity to the client (also not a big issue since fast CPUs are available and optimizing the JVM is a well known problem).
+</dd></dl>
+<dl><dd> The Java (and MIDP) implementation differs from phone to phone, so it is very hard to write a java program that works on all phones. This is a larger issue.
+</dd></dl>
+<dl><dd> Java must work to be secure, since it allows access to the host hardware such as the filesystem etc. This limits features like dynamic downloading of code. This is a very important issue for the way Swimmer is designed to work.
+</dd></dl>
+<p><i>In comparison, the Swimmer Virtual Machine is:</i>
+</p>
+<blockquote>
+<dl><dt> Lightweight
+</dt><dd> Will work in a very weak system, basically no lower memory requirement.
+</dd></dl>
+
+<dl><dt> Fast
+</dt><dd> The virtual machine has been designed to be as fast as possible - register based with no status register or flags, which means most opcodes are implemented with a single C-statement. This is particularly important since we want it to run well even if implemented in Java (VM inside a VM&nbsp;!).
+</dd></dl>
+
+<dl><dt> Simple
+</dt><dd> As much complexity as is practical has been moved to the server side. Therefore porting a Swimmer Client should take no more than a day, and reimplementing it (in another language etc) no more than a week.
+</dd></dl>
+
+<dl><dt> Closely defined
+</dt><dd> This minimizes (or preferably completely removes) implementation differences - in the same way that a game written and tested in a Nintendo Gameboy emulator can be expected to run fine in all ports of that particular emulator, and most likely in other gameboy emulators as well.
+</dd></dl>
+
+<dl><dt> Completely accessible from the Server
+</dt><dd> The Server can directly access both data and program memory in the virtual machine. This is actually one of the vital differences, that makes Swimmer much more suitable for multiuser/multiplayer applications.
+</dd></dl>
+</blockquote>
+<h3> The Client </h3>
+<p>The client was designed to be very easy to port or reimplement on practically
+any type of hardware, but is primarily intended for devices with at least a
+screen, a network connection and some sort of input mechanism (at least 4
+directional keys and a button).
+</p><p>The client also implements a set of <i>native functions</i> - functions for
+rendering graphics on the screen or sorting/copying memory for instance -
+that can be called either locally from Swimmer Machine Code, or directly
+from the server (via a specific network command as defined by the <i>Swimmer</i>
+Protocol<i>).</i>
+</p><p>Normally a client connects to a server at startup, and then acts a slave (or
+terminal), allowing the server full control - which means 'server' is really
+a misnomer, but used anyway since it is such an established term.
+</p><p>The server then feeds data directly to the clients memory, and connects
+events to programs implemented in Swimmer Machine Code and located in
+program memory.
+</p><p>One way of looking at it is that the Swimmer Client emulates a simple,
+made-up computer system, to which the server has full control.
+</p>
+<h3> The Server </h3>
+<p>The <i>Swimmer Server</i> is not as closely defined as the client - as long
+as it allows client connections and implements the <i>Swimmer Protocol</i> it
+is considered a swimmer server - but usually you will use the <i>Swimmer Server API</i>
+to implement your server, which is a set of classes that handles client
+connections, shared memory, compilation of client programs, sending and
+creating of (graphic) resources and a lot more.
+</p><p>(It is however entierly feasible to write a swimmer server entirely from
+scratch if you are creating some special, non-standard application).
+</p><p>A typical server will wait for client connections, let the client report
+its exact features (screen width &amp; height, available memory, available
+keys, max packet size etc) and then send content (code, graphics etc)
+that fits the particular client, and start execution on the client side.
+</p><p>Shared memory is then used for easy communication - if for instance the server needs
+to add a sprite to the list of sprites rendered by the client, it will
+simply modify the list in server side memory, and it will be automatically
+replicated to the affected clients.
+</p>
+<h3> Applications </h3>
+<p>Swimmer was initially designed with handheld, multiplayer gaming in mind, but
+is general enough for any client/server application, with clients of many
+sorts; for instance a client that doesn't implement the VM and has no input capabilities
+could still be used to present simple information.
+</p><p>(Swimmer could theoretically even be used for distributed calculations, for clients with no
+screen or input, but with a fast CPU and lots of memory).
+</p><p>Here is a quick list of typical applications:
+</p>
+<ul><li> Massive Multiplayer Gaming
+</li><li> Downloadable E-books
+</li><li> Web browsing (similar to what Opera Mobile is doing)
+</li><li> Information / Billboard TV system
+</li><li> Shared productivity applications (eg a multiuser sketch program)
+</li></ul>
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:941-0!1!0!0!!en!2 and timestamp 20070313125441 -->
+						<!-- end content -->
+<!-- Served by www.nightmode.org in 0.16 secs. -->
+</body></html>
