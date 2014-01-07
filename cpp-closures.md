@@ -11,7 +11,7 @@ C++11 Shared Pointers
 ---------------------
 If you have gotten your hands dirty with the new features in C++11 you know that it allows you to
 program differently than you used to. In addition to type inference through `auto` and *for each*
-loops, you have things like `std::move()` and `std::shared_ptr`.
+loops, you have things like `move()` and `std::shared_ptr`.
 
 These two, especially the reference counting *shared_ptr*, makes it
 much less necessary to use `new` or `delete`. You can almost always create objects on the stack and
@@ -22,21 +22,21 @@ a shared_ptr to the internal class in the external class, like this;
 
 {% highlight c++ %}
 struct Bitmap {
-	struct InternalBitmap {
-		InternalBitmap(int w, int h) : w(w), h(h), pixels(w*h) {}
-		int w;
-		int h;
-		std::vector<uint8_t> pixels;
-	};
+    struct InternalBitmap {
+        InternalBitmap(int w, int h) : w(w), h(h), pixels(w*h) {}
+        int w;
+        int h;
+        vector<uint8_t> pixels;
+    };
 
-	Bitmap(int w, int h) : internalBitmap(std::make_shared<InternalBitmap>(w, h)) {}
-	T& operator[](const int &i) { 
-		return (*internalBitmap->pixels)[i];
-	}
-	int width() const { return internalBitmap->w; }
-	int height() const { return internalBitmap->h; }
+    Bitmap(int w, int h) : internalBitmap(make_shared<InternalBitmap>(w, h)) {}
+    T& operator[](const int &i) { 
+        return (*internalBitmap->pixels)[i];
+    }
+    int width() const { return internalBitmap->w; }
+    int height() const { return internalBitmap->h; }
 
-	std::shared_ptr<InternalBitmap> internalBitmap;
+    shared_ptr<InternalBitmap> internalBitmap;
 };
 {% endhighlight %}
 Now you can treat your objects like in java for instance; pass it around by value and all
@@ -46,14 +46,14 @@ it will be destroyed, just like in a garbage collected language.
 If you don't need the enitre class to be shared, you can accomplish this in a simpler way like this;
 {% highlight c++ %}
 struct Bitmap {
-	Bitmap(int w, int h) :  : w(w), h(h), pixels(std::make_shared<std::vector<uint8_t>(w*h)) {}
-	T& operator[](const int &i) { 
-		return (*pixels)[i];
-	}
-	int w;
-	int h;
+    Bitmap(int w, int h) : w(w), h(h), pixels(make_shared<vector<uint8_t>(w*h)) {}
+    T& operator[](const int &i) { 
+        return (*pixels)[i];
+    }
 
-	std::shared_ptr<std::vector<uint8_t>> pixels;
+    int w;
+    int h;
+    shared_ptr<vector<uint8_t>> pixels;
 };
 {% endhighlight %}
 
@@ -73,21 +73,21 @@ This is how a simple program may look like:
 {% highlight c++ %}
 int main() {
 
-	screen.open();
+    screen.open();
 
-	int x = 0;
-	Font font("data/ObelixPro.ttf", 18);
-	Bitmap logo = load_png("data/logo.png");
-	Texture tex(logo);
+    int x = 0;
+    Font font("data/ObelixPro.ttf", 18);
+    Bitmap logo = load_png("data/logo.png");
+    Texture tex(logo);
 
-	while(screen.is_open()) {
-		screen.clear();
-		screen.circle(x += 4, 200, 180, 0xff0000ff);
-		screen.draw(tex);
-		screen.text(font, "Circle", screen.width()-120, screen.height()-50);
-		screen.flip();
-	};
-	return 0;
+    while(screen.is_open()) {
+        screen.clear();
+        screen.circle(x += 4, 200, 180, 0xff0000ff);
+        screen.draw(tex);
+        screen.text(font, "Circle", screen.width()-120, screen.height()-50);
+        screen.flip();
+    };
+    return 0;
 }
 {% endhighlight %}
 
@@ -109,32 +109,32 @@ pointer to be called repeatedly. This works, but makes small examples like this 
 {% highlight c++ %}
 struct App {
 
-	App() : x(0), font("data/ObelixPro.ttf", 18), logo(load_png("data/logo.png")), tex(logo) {
-	}
+    App() : x(0), font("data/ObelixPro.ttf", 18), logo(load_png("data/logo.png")), tex(logo) {
+    }
 
-	void update() {
-		screen.clear();
-		screen.circle(x += 4, 200, 180, 0xff0000ff);
-		screen.draw(tex);
-		screen.text(font, "Circle", screen.width()-120, screen.height()-50);
-		screen.flip();
-	}
+    void update() {
+        screen.clear();
+        screen.circle(x += 4, 200, 180, 0xff0000ff);
+        screen.draw(tex);
+        screen.text(font, "Circle", screen.width()-120, screen.height()-50);
+        screen.flip();
+    }
 
-	int x;
-	Font font;
-	Bitmap logo;
-	Texture tex;
+    int x;
+    Font font;
+    Bitmap logo;
+    Texture tex;
 };
 
 void runMainLoop() {
-	static App app;
-	app.update();
+    static App app;
+    app.update();
 }
 
 int main() {
-	screen.open();
-	screen.run_main_loop(runMainLoop);
-	return 0;
+    screen.open();
+    screen.run_main_loop(runMainLoop);
+    return 0;
 }
 {% endhighlight %}
 But then it hit me; since the classes are designed for pass-by-value, I can
@@ -145,20 +145,20 @@ static function<void()> renderLoopFunction;
 
 #ifdef EMSCRIPTEN
 static void runMainLoop() {
-		renderLoopFunction();
+    renderLoopFunction();
 }
 #endif
 
 void Window::render_loop(function<void()> f, int fps) {
-	renderLoopFunction = f;
+    renderLoopFunction = f;
 #ifdef EMSCRIPTEN
-	emscripten_set_main_loop(runMainLoop, fps, false);
+    emscripten_set_main_loop(runMainLoop, fps, false);
 #else
-	atexit([](){
-		while(screen.is_open()) {
-			renderLoopFunction();
-		}
-	});
+    atexit([](){
+        while(screen.is_open()) {
+            renderLoopFunction();
+        }
+    });
 #endif
 }
 {% endhighlight %}
@@ -166,20 +166,20 @@ And changed the earlier example into this;
 {% highlight c++ %}
 int main() {
 
-	screen.open();
-	int x = 0;
-	Font font("data/ObelixPro.ttf", 18);
-	Bitmap logo = load_png("data/logo.png");
-	Texture tex(logo);
+    screen.open();
+    int x = 0;
+    Font font("data/ObelixPro.ttf", 18);
+    Bitmap logo = load_png("data/logo.png");
+    Texture tex(logo);
 
-	screen.set_render_loop([=]() mutable {
-		screen.clear();
-		screen.circle(x += 4, 200, 180, 0xff0000ff);
-		screen.draw(tex);
-		screen.text(font, "Circle", screen.width()-120, screen.height()-50);
-		screen.flip();
-	});
-	return 0;
+    screen.set_render_loop([=]() mutable {
+        screen.clear();
+        screen.circle(x += 4, 200, 180, 0xff0000ff);
+        screen.draw(tex);
+        screen.text(font, "Circle", screen.width()-120, screen.height()-50);
+        screen.flip();
+    });
+    return 0;
 }
 {% endhighlight %}
 ...and it worked perfectly. Note my use of `atexit()` -- the render loop is actually executed after `main()` has exited and
@@ -188,4 +188,27 @@ all the variables have gone out of scope. But since the lambda has captured them
 More on Lambda expressions
 --------------------------
 
-If you haven't used lambda expressions in C++ before, the earlier example may have confused you.
+If you haven't used lambda expressions in C++ before, the earlier example may have confused you. And even if you have, you may have
+wondered about the `[=]` clause which means that the lambda catches everything by value, and the `mutable` keyword.
+
+Well, we need to capture everything by value since if we catch by reference (using `[&]`) those references will be invalid when our
+`main()` function has ended.
+
+`mutable` just means that the lambda object members are changable. We need this to be able to change the `x` variable. Remeber that a
+lambda generates anonymous class, with all captured variables as members, and a `()` operator so it can be called as a function.
+
+Lambdas are great for simple callbacks - and indeed, this is used a lot in javascript for asynchrounous programming; You start an action
+and provide some code that will be executed when the action is done. And now we have all *three* things that makes callbacks really useable
+in our C++ code. We have lambdas, we have reference counted *by-value* objects -- and thanks to emscripten -- we are forced to design our program in an event driven way. This means we can make sure our callback is executed in the same thread where it is defined, and thus it can reference surrounding state in a thread-safe manner.
+
+This is a simple example on how I play audio using this techique;
+{% highlight c++ %}
+    ModPlugin modPlugin;
+    auto player = modPlugin.fromFile("data/dna-dream.mod"));
+    AudioPlayer audioPlayer([=](uint16_t *target, int len) {
+        player.getSamples(target, len);
+    });
+{% endhighlight %}
+The `ModPlugin` can create an object that generates sound from a given music file.
+Our `AudioPlayer` takes a callback that should generate audio every time the audio buffer needs to be filled.
+It doesn't need to be harder then this.
