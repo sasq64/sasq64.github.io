@@ -11,15 +11,39 @@ C++11 Shared Pointers
 ---------------------
 If you have gotten your hands dirty with the new features in C++11 you know that it allows you to
 program differently than you used to. In addition to type inference through `auto` and *for each*
-loops, you have things like `std::move()` and `std::shared_ptr`.
+loops, we now have a standard smart pointer called `std::shared_ptr`.
 
-These two, and especially the reference counting *shared_ptr*, makes it
-much less necessary to use `new` or `delete`. You can almost always create objects on the stack and
+If you don't know how smart pointers work, well, they basically wrap a pointer and a reference
+counter, so that the object pointed to can be destroyed when there are no more references to it.
+This will emulate how references work in a garbage collected language like javascript.
+
+`std::shared_ptr` makes it much less necessary to use `new` or `delete`. You can almost always create objects on the stack and
 pass by value without many of the problems and penalties you used to have.
 
-One way to accomplish this is put your class members in an internal class, and only store
-a *shared_ptr* to the internal class in the external class, like this;
+The normal way to use a shared_ptr is like this;
+{% highlight c++ %}
+struct Bitmap {
+    Bitmap(int w, int h) : w(w), h(h), pixels(w*h) {}
+    int w;
+    int h;
+    vector<uint8_t> pixels;
+};
 
+shared_ptr<Bitmap> bitmap(new Bitmap(100,100);
+{% endhighlight %}
+or preferrably, you can use type inference and the more effecient `make_shared<T>()` instead, 
+since it can create the Bitmap and the shared_ptr with only one allocation.
+{% highlight c++ %}
+auto bitmap = make_shared<Bitmap>(100,100);
+{% endhighlight %}
+
+Hiding the shared_ptr
+---------------------
+Now you can use your `bitmap` variable like a normal pointer, but you dont have to `delete` it.
+When it goes out of scope, the shared_ptr destructor will be called and it will delete the object.
+
+But if you are designing an API say, and you want to spare your users from these details, you
+can hide the reference counting shared_ptr like this:
 {% highlight c++ %}
 struct Bitmap {
     struct InternalBitmap {
@@ -39,7 +63,11 @@ struct Bitmap {
     shared_ptr<InternalBitmap> internalBitmap;
 };
 {% endhighlight %}
-Now you can treat your object like *javascript*; pass it around by value and all
+Now your *Bitmap* will create an *InternalBitmap* on construction, and delete it on destruction.
+The outer Bitmap contains only the *shared_ptr*, so it's small enough to pass around by value
+without any noticable loss in performance.
+
+And so you can now treat your object like *javascript*; pass it around by value and all
 places that store it will share the same bitmap -- and when the last reference goes away
 it will be destroyed, just like in a garbage collected language.
 
@@ -57,14 +85,16 @@ struct Bitmap {
 };
 {% endhighlight %}
 
-This is how I usually do it; keep simple data members as is, since
-copying them is not a performance problem, and wrap all your containers in a `shared_ptr`. This is
+This is how I usually do it; keep simple data members as is, since  copying them is
+not normally a performance problem, and wrap all your containers in a `shared_ptr`. This is
 also how it works in languages like *python* -- top level members gets copied, but anything
 referenced gets shared.
 
 Library programming and Emscripten
 ----------------------------------
-So I have been using these techniques in a graphics library I am developing. The idea was
+
+I mentioned designing APIs; this is because I have been using these techniques in a graphics
+library I am developing. The idea was
 that it would make the library easy enough to use for beginners. It is kind of inspired by
 my experiences programming 8-bit computers as a kid. 
 
@@ -210,4 +240,4 @@ This is a simple example on how I play audio using this techique;
 {% endhighlight %}
 The `ModPlugin` can create an object that generates sound from a given music file.
 Our `AudioPlayer` takes a callback that should generate audio every time the audio buffer needs to be filled.
-It doesn't need to be harder then this.
+It doesn't need to be harder than this.
