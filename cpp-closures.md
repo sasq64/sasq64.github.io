@@ -123,7 +123,7 @@ int main() {
 {% endhighlight %}
 
 Hopefully this is pretty straight forward. *Bitmaps* are just big arrays of pixels, while *Textures* are OpenGL textures,
-represented by a texture ID. *Fonts* also become textures on creation (allthough they use *distance fields* by default).
+represented by a texture ID. *Fonts* also become textures on creation (although they use *distance fields* by default).
 
 Then came the day when I discovered **emscripten**. If you haven't heard of it; it's a LLVM based compiler
 that compiles C/C++ code into javascript for the web. And it *works*!
