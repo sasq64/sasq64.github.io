@@ -82,7 +82,7 @@ function<bitmap()> fractalGenerator(int w, int h) {
         for(int y=0; y<h; y++)
             for(int x=0; x<w; x++)
                 bm[x+y*w] = someFunction(x,y);
-        return bitmap;
+        return bm;
     };
 }
 {% endhighlight %}
