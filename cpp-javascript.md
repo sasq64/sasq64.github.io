@@ -36,7 +36,7 @@ would normally do this is letting your class act as a wrapper for an internal cl
 which is referenced using a *shared_ptr*.
 
 This means the class is small when seen as a value, and even when it is copied, the
-copy will reference the same state through the shared_ptr.
+copy will reference the same state through the *shared_ptr*.
 
 Here is an example;
 {% highlight c++ %}
@@ -65,16 +65,14 @@ fill(myBitmap, 0x33);
 
 {% endhighlight %}
 
-Objects that are designed like this should be passed by value, and does normally
-not need to be created using *new* or *delete*.
-They will also not leak memory and basically work like objects in a garbage
+Notice that our bitmap will also not leak memory and basically works like objects in a garbage
 collected language such as *python*.
 
 LAMBDAS AS CLOSURES
 -------------------
 
-Our *by-value* classes means we can now treat lambdas as closures. By this
-I mean that variables captured by the lambda function will be retained, even
+Our *by-value* classes means we can now *treat lambdas as closures*. By this
+I mean that variables captured by a lambda function will be retained, even
 if the variables captured goes out of scope.
 
 {% highlight c++ %}
@@ -138,7 +136,7 @@ you do something like this:
 {% highlight c++ %}
 int main() {
     Bitmap logo = load_png("data/logo.png");
-    screen.render_loop([=]() mutable {
+    screen.render_loop([=]() {
         screen.clear();
         screen.draw(logo);
         screen.flip();
