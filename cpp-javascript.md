@@ -6,19 +6,20 @@ category:
 tags: []
 ---
 {% include JB/setup %}
+*by Jonas Minnberg* -- <sasq64@gmail.com>
 
 In this article I will briefly describe a technique that allows you to program C++
-in a way that is more similar to dynamic or functional lanugages such as python or
+in a way that is more similar to dynamic or functional languages such as python or
 javascript.
 
 I assume you know C++, and have at least read up on the new C++11 features -- at least
 the new *shared_ptr* as well as *lambda* functions.
 
-It requires you write your classes in a certain way, and makes the most sense when
+It requires that you write your classes in a certain way, and makes the most sense when
 you have a clear division between the *client code* that is written to accomplish
 a specific task, and the *API* of generic classes and functions that the client code uses.
 
-More specificly, by designing your API using these techniques, the client code using the API
+More specifically, by designing your API using these techniques, the client code using the API
 can be written by programmers that are more familiar with higher level languages, and without
 managing many of the complexities inherent to C++.
 
@@ -115,7 +116,7 @@ EVENT DRIVEN ARCHITECTURE
 -------------------------
 
 The final piece of the puzzle is this; we need to design our program so that it
-reacts to events and not runs a main loop that does all the work.
+reacts to events instead of running a main loop that does all the work.
 
 This is what you need to do anyway if you want to compile to a javascript target (using 
 *emscripten*), or if you use a third-party library that requires it, such as *GLUT*.
@@ -144,7 +145,7 @@ int main() {
     return 0;
 }
 {% endhighlight %}
-In this second version we create a lambda that will be excuted regularly by our `screen` object.
+In this second version we create a lambda that will be executed regularly by our `screen` object.
 This will happen *after* `main()` has exited, but this is not a problem since our bitmap is
 captured by the lambda and will outlive the scope in which it was originally created.
 
@@ -166,7 +167,7 @@ the render loop we can make sure the callback is called *in between* calls to th
 and so in *the same thread* as the render loop.
 
 Together with our *by value* classes and C++11 lambdas, this allows us to use callbacks in
-a very poweful way. Here is another example;
+a very powerful way. Here is another example;
 
 {% highlight c++ %}
     my_string title = "Initial text";
