@@ -17,7 +17,23 @@ tags: [music,demoscene]
 
 <iframe width="960" height="540" src="http://www.youtube.com/embed/hEa22yAvQrw?theme=light"></iframe>
 
-* Downloads: Soon!
+## Downloads
+
+### Raspberry PI
+* [Beta 2](/dl/chipmachine_beta2_rpi.tar.gz)
+
+### Mac OS X
+* [Beta 2](/dl/chipmachine_beta2_osx.zip)
+
+### Linux
+* Build from source, see below
+
+## Building from Source
+[http://github.com/sasq64/chipmachine/](http://github.com/sasq64/chipmachine/)
+
+Building from source should be fairly simple on Ubuntu/Linux
+
+## Information
 
 ### Databases
 
