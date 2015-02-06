@@ -45,13 +45,13 @@ Building from source should be fairly simple on Ubuntu/Linux
 * ASMA http://asma.atari.org/
 
 
-### Formats
+## Formats
 
-## VICE/reSID
+### VICE/reSID
 
 Plays SID files, music from the Commodore 64.
 
-## OpenMPT
+### OpenMPT
 http://sourceforge.net/projects/modplug/
 
 Plays classical Amiga & PC mods.
@@ -200,6 +200,7 @@ Plays Amiga custom format music. Not all formats below work 100%
 * MikeDavies /Tiertex Player (MD)
 * ModuleProtector 1.0
 * Music-Assembler
+* MusicLineEditor
 * NoisePacker 1, 2, 1.0, 2.0, 3.0
 * NoiseRunner
 * NoiseTracker
