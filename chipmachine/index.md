@@ -1,13 +1,11 @@
 ---
 layout: page
-title: "Chipmachine"
+title: "Chipmachine Music Player"
 description: ""
 category: 
 tags: [music,demoscene]
 ---
 {% include JB/setup %}
-
-## Chipmachine Music Player
 
 * Multiformat music player
 * Fullscreen demo-like GUI
@@ -17,7 +15,7 @@ tags: [music,demoscene]
 
 <iframe width="960" height="540" src="http://www.youtube.com/embed/hEa22yAvQrw?theme=light"></iframe>
 
-## Downloads
+# Downloads
 
 ### Raspberry PI
 * [Beta 2](/dl/chipmachine_beta2_rpi.tar.gz)
@@ -28,22 +26,21 @@ tags: [music,demoscene]
 ### Linux
 * Build from source, see below
 
-## Building from Source
+# Building from Source
 [http://github.com/sasq64/chipmachine/](http://github.com/sasq64/chipmachine/)
 
 Building from source should be fairly simple on Ubuntu/Linux
 
-## Information
+# Detailed Information
 
-### Databases
+## Inlcuded Databases
 
-* High Voltage Sid Collection http://www.hvsc.c64.org/
-* Modland ftp://ftp.modland.com/
-* Remix.Kwed.Org http://remix.kwed.org/
-* SNESMusic.org http://snesmusic.org/
-* SNDH http://sndh.atari.org/
-* ASMA http://asma.atari.org/
-
+* [High Voltage Sid Collection](http://www.hvsc.c64.org/)
+* [Modland](ftp://ftp.modland.com/)
+* [Remix.Kwed.Org](http://remix.kwed.org/)
+* [SNESMusic.org](http://snesmusic.org/)
+* [SNDH](http://sndh.atari.org/)
+* [ASMA](http://asma.atari.org/)
 
 ## Formats
 
@@ -52,7 +49,8 @@ Building from source should be fairly simple on Ubuntu/Linux
 Plays SID files, music from the Commodore 64.
 
 ### OpenMPT
-http://sourceforge.net/projects/modplug/
+
+[http://http://lib.openmpt.org/](http://http://lib.openmpt.org/)
 
 Plays classical Amiga & PC mods.
 
@@ -88,11 +86,11 @@ Plays classical Amiga & PC mods.
 * Galaxy Sound System (J2B)
 
 ### GME
-http://slack.net/~ant/libs/audio.html
+[http://slack.net/~ant/libs/audio.html](http://slack.net/~ant/libs/audio.html)
 
 Plays music from older 8 and 16-bit consoles.
 
-* X Spectrum, Amstrad CPC (AY)
+* ZX Spectrum, Amstrad CPC (AY)
 * Nintendo Game Boy (GBS)
 * Sega Genesis, Mega Drive (GYM)
 * NEC TurboGrafx-16, PC Engine (HES)
@@ -103,13 +101,13 @@ Plays music from older 8 and 16-bit consoles.
 * Sega Master System, Mark III, Sega Genesis, Mega Drive, BBC Micro (VGM, VGZ)
 
 ### Hivelytracker
-http://hivelytracker.com/
+[http://hivelytracker.com/](http://hivelytracker.com/)
 
 * Hively
 * AHX
 
 ### SC68
-http://sc68.atari.org/
+[http://sc68.atari.org/](http://sc68.atari.org/)
 
 Plays Atari music.
 
@@ -122,7 +120,7 @@ Plays Atari music.
 * SNDH
 
 ### UADE
-http://zakalwe.fi/uade/
+[http://zakalwe.fi/uade/](http://zakalwe.fi/uade/)
 
 Plays Amiga custom format music. Not all formats below work 100%
 
@@ -285,31 +283,59 @@ Plays Amiga custom format music. Not all formats below work 100%
 * Zen Packer
 
 ### PlayGSF
-http://projects.raphnet.net/
+[http://projects.raphnet.net/](http://projects.raphnet.net/)
 
 Plays Gameboy Advance music, *badly*.
 
 * GSF
 * MINIGSF
 
-## Highly Experimental
+### Highly Experimental
 
 * Playstation
 * Playstation 2
 
-## Higly 
+### Highly Theoretical
 
 * Dreamcast
 
-## Lazy USF
+### Lazy USF
 
 * Nintendo 64
 
-## ADPlug
+### ADPlug
 
-## xxx
+* Accolade MIDI File Format
+* Ad Lib MIDI File Format
+* Adlib Tracker 1.0
+* Arkham Master Tracker 2.4
+* Beni Tracker
+* BoomTracker 4.0
+* Callus OPL Register Logs
+* E.M.S. Music System
+* eXtra Simple Music
+* FM-Kingtracker 1.06f
+* FM Music Toolkit 1.1
+* FM-Song
+* FMTracker 1.1b
+* FM Tracker 1.45
+* Frankus Tracker
+* G-Tech MIDI MPU Format
+* Game Music System 1.1
+* Jozz Adlib Music Driver
+* Jozz JBM Format
+* Loudness
+* MCPlayer
+* MTMusic
+* MacsOpera
+* Music Maker
+* Musician I 1.5
+* NK-Amp 1.0
+* Note 1.0 Beta 2
+* Riley Music Format
+* Surprise! Adlib Tracker 2.00
+* Troddlers Music Format
 
-Nintendo DS
+### ndsmusicplayer
 
-
-
+* Nintendo DS
